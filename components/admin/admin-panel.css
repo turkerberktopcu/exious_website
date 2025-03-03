@@ -1,0 +1,336 @@
+:root {
+    /* Adjust these to match your main site palette */
+    --primary-color: #ff4757;   /* Neon-ish pink/red */
+    --secondary-color: #ff6b81; /* Lighter pink for hovers, etc. */
+    --background-color: #0a0a0a;
+    --text-color: #ffffff;
+    --border-radius: 8px;
+  
+    /* Additional helper colors */
+    --card-bg: #1a1a1a;
+    --card-shadow: rgba(255, 71, 87, 0.2);
+    --input-border: #ff4757;
+    --heading-gradient: linear-gradient(45deg, #ff4757 0%, #ff6b81 100%);
+  }
+  
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+  }
+  
+  /* Container for everything */
+  .admin-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  /* Main title at top */
+  h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2rem;
+    background: var(--heading-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  /* LOGIN SECTION */
+  .login-form {
+    max-width: 420px;
+    margin: 0 auto;
+    background-color: var(--card-bg);
+    padding: 30px;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--primary-color);
+    box-shadow: 0 0 15px var(--card-shadow);
+  }
+  
+  .login-form h2 {
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 1.5rem;
+    background: var(--heading-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--text-color);
+  }
+  
+  input[type="email"],
+  input[type="password"],
+  input[type="text"],
+  textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--input-border);
+    border-radius: var(--border-radius);
+    font-size: 16px;
+    background-color: #111;
+    color: var(--text-color);
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  
+  input:focus,
+  textarea:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 8px var(--card-shadow);
+  }
+  
+  /* Buttons (login, update, logout) */
+  .login-btn,
+  .update-btn,
+  .logout-btn {
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background-color 0.3s, transform 0.3s;
+    width: 100%;
+  }
+  
+  .login-btn:hover,
+  .update-btn:hover,
+  .logout-btn:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
+  }
+  
+  /* CONTENT EDITOR */
+  .editor-container {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--primary-color);
+    box-shadow: 0 0 15px var(--card-shadow);
+    padding: 20px;
+    margin-top: 40px;
+  }
+  
+  .editor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  
+  .editor-header h2 {
+    font-size: 1.5rem;
+    background: var(--heading-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .logout-btn {
+    width: auto;
+    background-color: #ff4757;
+    border: none;
+  }
+  
+  .logout-btn:hover {
+    background-color: #ff6b81;
+  }
+  
+  .editor-section {
+    margin-bottom: 40px;
+    padding: 20px;
+    background-color: #111; /* Slightly lighter/darker than card-bg for contrast */
+    border-radius: var(--border-radius);
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  
+  .editor-section h3 {
+    margin-bottom: 20px;
+    background: var(--heading-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .card-item-editor,
+  .stat-item-editor {
+    background-color: #1a1a1a;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 2px 5px rgba(255, 71, 87, 0.05);
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+  
+  .card-item-editor h4,
+  .stat-item-editor h4 {
+    margin-bottom: 15px;
+    background: var(--heading-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .update-btn {
+    margin-top: 20px;
+    width: auto;
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: var(--border-radius);
+    background-color: var(--primary-color);
+    transition: background-color 0.3s, transform 0.3s;
+  }
+  
+  .update-btn:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
+  }
+  
+  textarea {
+    min-height: 100px;
+    resize: vertical;
+    background-color: #111;
+    border: 1px solid var(--input-border);
+    color: var(--text-color);
+  }
+
+  /* Additional styles for the admin nav */
+.admin-nav {
+    margin-bottom: 2rem;
+    background-color: #111;
+    border-radius: var(--border-radius);
+    border: 1px solid rgba(255,255,255,0.1);
+    overflow: hidden;
+  }
+  
+  .admin-nav ul {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .admin-nav li {
+    flex: 1;
+  }
+  
+  .admin-nav a {
+    display: block;
+    text-align: center;
+    padding: 12px 0;
+    color: #fff;
+    text-decoration: none;
+    transition: background-color 0.3s;
+  }
+  
+  .admin-nav a:hover,
+  .admin-nav a.active {
+    background-color: var(--primary-color);
+    transform: none;
+  }
+  
+  
+  /* Smaller screens */
+  @media (max-width: 768px) {
+    .editor-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .logout-btn {
+      margin-top: 1rem;
+    }
+    .login-form {
+      margin-top: 2rem;
+    }
+  }
+  
+
+  .messages-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .message-card {
+    background-color: #1a1a1a;
+    border: 1px solid rgba(255, 71, 87, 0.3);
+    border-radius: 8px;
+    padding: 1rem;
+    color: #fff;
+    transition: transform 0.3s ease;
+  }
+  
+  .message-card h4 {
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+    background: linear-gradient(45deg, #ff4757 0%, #ff6b81 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .message-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(255, 71, 87, 0.2);
+  }
+  .delete-msg-btn {
+    background-color: #dc3545;
+    border: none;
+    color: #fff;
+    padding: 8px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 10px;
+    transition: background-color 0.3s;
+  }
+  
+  .delete-msg-btn:hover {
+    background-color: #c82333;
+  }
+  /* LOADER OVERLAY */
+.loader-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(10,10,10,0.8); /* Dark overlay with some transparency */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999; /* on top of everything */
+  }
+  
+  /* LOADER SPINNER */
+  .loader-spinner {
+    width: 60px;
+    height: 60px;
+    border: 6px solid rgba(255,71,87,0.3); /* Outer ring color (lighter) */
+    border-top-color: #ff4757;             /* Neon accent color */
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  
+  /* Spinner animation */
+  @keyframes spin {
+    0%   { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  

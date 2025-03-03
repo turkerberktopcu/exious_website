@@ -46,7 +46,7 @@ section.active {
     width: 100%;
     height: 100%;
     background: repeating-linear-gradient(
-        0deg,
+        10deg,
         rgba(255,71,87,0.08) 0px,
         rgba(255,71,87,0.08) 2px,
         transparent 2px,
@@ -214,7 +214,7 @@ h1 {
     position: relative;
     width: 100%;
     max-width: 1200px;
-    height: 400px;
+    height: 600px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -345,3 +345,126 @@ h1 {
       transform: translateY(-10px) !important;
     }
   }
+/* BRIDGE SECTION: modern, diagonal waves + neon orbs + scanning lines */
+.bridge-section {
+  position: relative;
+  /* Futuristic gradient background */
+  background: linear-gradient(45deg, #141414, #1f1f1f);
+  min-height: 60vh; /* taller for a grand look */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+  padding: 4rem 2rem;
+}
+
+/* Scanning neon lines, same style as hero */
+.bridge-section::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: repeating-linear-gradient(
+    10deg,
+    rgba(255,71,87,0.08) 0px,
+    rgba(255,71,87,0.08) 2px,
+    transparent 2px,
+    transparent 4px
+  );
+  pointer-events: none;
+  z-index: 0; /* behind everything */
+}
+
+/* Container to keep text + button above the shapes/orbs */
+.bridge-container {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Title */
+.bridge-section h2 {
+  font-size: 2.2rem;
+  margin-bottom: 1rem;
+  background: linear-gradient(45deg, #ff4757 0%, #ff6b81 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Paragraph */
+.bridge-section p {
+  max-width: 700px;
+  margin: 0 auto 2rem;
+  color: #dcdde1;
+  line-height: 1.6;
+  font-weight: 300;
+}
+
+/* The main CTA button */
+.bridge-button {
+  display: inline-block;
+  padding: 1rem 2rem;
+  border: 2px solid #ff4757;
+  background: transparent;
+  color: #fff;
+  border-radius: 30px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.bridge-button:hover {
+  background: rgba(255, 71, 87, 0.2);
+  transform: translateY(-3px);
+  box-shadow: 0 5px 25px rgba(255,71,87,0.3);
+}
+
+/* Diagonal wave shapes (top & bottom) */
+.bridge-wave {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  background: #0a0a0a; /* color behind the wave */
+  z-index: 1; /* in front of scanning lines, behind text */
+}
+.wave-top {
+  top: 0;
+  /* Diagonal clip path shape (slant) */
+  clip-path: polygon(0 100%, 100% 0, 100% 100%);
+}
+.wave-bottom {
+  bottom: 0;
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+}
+
+/* Floating neon orbs for extra flair */
+.bridge-decor.orb {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  background: #ff4757;
+  border-radius: 50%;
+  filter: blur(50px);
+  opacity: 0.3;
+  animation: orbFloat 6s infinite alternate ease-in-out;
+  z-index: 1;
+}
+.orb1 {
+  top: 20%;
+  left: 15%;
+}
+.orb2 {
+  bottom: 20%;
+  right: 15%;
+}
+
+/* Orb float animation */
+@keyframes orbFloat {
+  0% { transform: translateY(0) translateX(0); }
+  100% { transform: translateY(-20px) translateX(20px); }
+}
