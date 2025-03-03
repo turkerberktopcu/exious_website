@@ -1,0 +1,106 @@
+/* Futuristic Footer Styles */
+.futuristik-footer {
+    background: #0a0a0a;
+    border-top: 1px solid rgba(255,71,87,0.1);
+    position: relative;
+    padding: 4rem 2rem 2rem;
+    margin-top: auto;
+}
+
+.futuristik-footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, #ff4757 0%, #ff6b81 100%);
+    box-shadow: 0 0 20px rgba(255,71,87,0.3);
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 3rem;
+}
+
+.footer-section h4 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(45deg, #ff4757 0%, #ff6b81 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.footer-section ul {
+    list-style: none;
+}
+
+.footer-section li {
+    margin-bottom: 0.8rem;
+}
+
+.footer-section a {
+    color: #dcdde1;
+    text-decoration: none;
+    position: relative;
+    transition: 0.3s;
+}
+
+.footer-section a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: #ff4757;
+    transition: 0.3s;
+}
+
+.footer-section a:hover::after {
+    width: 100%;
+}
+
+.social-links {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.social-icon {
+    padding: 0.5rem 1rem;
+    border: 1px solid rgba(255,71,87,0.3);
+    border-radius: 4px;
+    transition: 0.3s;
+}
+
+.social-icon:hover {
+    background: rgba(255,71,87,0.1);
+    transform: translateY(-2px);
+}
+
+.footer-bottom {
+    text-align: center;
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    color: #888;
+}
+
+.footer-bottom a {
+    color: #888;
+    text-decoration: none;
+}
+
+.footer-bottom a:hover {
+    color: #ff4757;
+}
+
+@media (max-width: 768px) {
+    .footer-content {
+        grid-template-columns: 1fr;
+    }
+}
