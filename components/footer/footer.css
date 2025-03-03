@@ -5,9 +5,9 @@
     position: relative;
     padding: 4rem 2rem 2rem;
     margin-top: auto;
-}
-
-.futuristik-footer::before {
+  }
+  
+  .futuristik-footer::before {
     content: '';
     position: absolute;
     top: 0;
@@ -16,40 +16,41 @@
     height: 3px;
     background: linear-gradient(90deg, #ff4757 0%, #ff6b81 100%);
     box-shadow: 0 0 20px rgba(255,71,87,0.3);
-}
-
-.footer-content {
+  }
+  
+  .footer-content {
     max-width: 1200px;
     margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
     gap: 3rem;
-}
-
-.footer-section h4 {
+  }
+  
+  
+  .footer-section h4 {
     font-size: 1.5rem;
     margin-bottom: 1.5rem;
     background: linear-gradient(45deg, #ff4757 0%, #ff6b81 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-}
-
-.footer-section ul {
+  }
+  
+  .footer-section ul {
     list-style: none;
-}
-
-.footer-section li {
+  }
+  
+  .footer-section li {
     margin-bottom: 0.8rem;
-}
-
-.footer-section a {
+  }
+  
+  .footer-section a {
     color: #dcdde1;
     text-decoration: none;
     position: relative;
     transition: 0.3s;
-}
-
-.footer-section a::after {
+  }
+  
+  .footer-section a::after {
     content: '';
     position: absolute;
     bottom: -2px;
@@ -58,49 +59,145 @@
     height: 1px;
     background: #ff4757;
     transition: 0.3s;
-}
-
-.footer-section a:hover::after {
+  }
+  
+  .footer-section a:hover::after {
     width: 100%;
-}
-
-.social-links {
+  }
+  
+  .social-links {
     display: flex;
     gap: 1rem;
     margin-top: 1rem;
-}
-
-.social-icon {
+  }
+  
+  .social-icon {
     padding: 0.5rem 1rem;
     border: 1px solid rgba(255,71,87,0.3);
     border-radius: 4px;
     transition: 0.3s;
-}
-
-.social-icon:hover {
+  }
+  
+  .social-icon:hover {
     background: rgba(255,71,87,0.1);
     transform: translateY(-2px);
-}
-
-.footer-bottom {
+  }
+  
+  .footer-bottom {
     text-align: center;
     margin-top: 4rem;
     padding-top: 2rem;
     border-top: 1px solid rgba(255,255,255,0.1);
     color: #888;
-}
-
-.footer-bottom a {
+  }
+  
+  .footer-bottom a {
     color: #888;
     text-decoration: none;
-}
-
-.footer-bottom a:hover {
+  }
+  
+  .footer-bottom a:hover {
     color: #ff4757;
+  }
+  .footer-section.faq-section {
+    width: 60%; /* Force FAQ to full width */
+  }
+  .footer-section:not(.faq-section) {
+    flex: 1;
+    min-width: 250px; /* Minimum width before wrapping */
+  }
+  /* FAQ Accordion Styles */
+  .faq-section .faq-item {
+    border-top: 1px solid rgba(255,71,87,0.1);
+    padding: 0.8rem 0;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: fadeInUp 0.5s forwards;
+  }
+  
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .faq-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .faq-question {
+    font-weight: 600;
+    margin: 0;
+    color: #ff6b81;
+  }
+  
+  .faq-toggle {
+    font-size: 1.5rem;
+    transition: transform 0.3s ease;
+    display: inline-block;
+    color: #ff6b81;
+  }
+  
+  .faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+    color: #dcdde1;
+    margin: 0;
+    opacity: 0;
+  }
+  
+  .faq-item.active .faq-answer {
+    max-height: 200px; /* Adjust based on content */
+    margin-top: 0.5rem;
+    opacity: 1;
+  }
+  
+  .faq-item.active .faq-toggle {
+    transform: rotate(45deg);
+  }
+  
+
+
+.typewriter {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    border-right: 0.15em solid #ff4757; /* Cursor effect */
+    width: 0; /* Start hidden */
 }
 
-@media (max-width: 768px) {
-    .footer-content {
-        grid-template-columns: 1fr;
-    }
+.animate-typewriter {
+    animation: typewriter 3s steps(30, end) forwards, blink-caret 0.75s step-end 4;
+    width: max-content; /* Expands exactly to the text width */
+    border-right: none; /* Hides the cursor after animation ends */
 }
+
+  
+  @keyframes typewriter {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+@keyframes blink-caret {
+    0%, 100% { border-color: transparent; }
+    50% { border-color: #ff4757; }
+}
+
+
+
+  @media (max-width: 768px) {
+    .footer-content {
+      flex-direction: column;
+    }
+    .footer-section:not(.faq-section) {
+      flex: 0 0 auto;
+      width: 100%;
+      min-width: auto;
+    }
+  }
+  

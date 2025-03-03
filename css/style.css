@@ -5,12 +5,6 @@
     font-family: 'Inter', sans-serif;
 }
 
-html {
-    scroll-behavior: smooth;
-    scroll-snap-type: y;
-    overflow-y: scroll;
-}
-
 body {
     background: #0a0a0a;
     color: #fff;
