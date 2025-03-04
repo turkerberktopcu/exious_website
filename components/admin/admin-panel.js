@@ -60,27 +60,123 @@ window.logoutAdmin = async function() {
  */
 
 function setupAdminNav() {
-    const navLinks = document.querySelectorAll('.admin-nav a');
-    navLinks.forEach(link => {
-      link.addEventListener('click', (e) => {
-        e.preventDefault();
-        // Remove 'active' from all
-        navLinks.forEach(l => l.classList.remove('active'));
-        link.classList.add('active');
-  
-        const panel = link.getAttribute('data-panel');
-        if (panel === 'site-content') {
-          loadSiteContentEditors();
-        } else if (panel === 'faq') {
-          loadFAQEditor();
-        } else if (panel === 'messages') {
-          loadMessages();
-        } else if (panel === 'blogs') {
-            loadBlogs(); 
-          }
-      });
+  const navLinks = document.querySelectorAll('.admin-nav a');
+  navLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      navLinks.forEach(l => l.classList.remove('active'));
+      link.classList.add('active');
+      
+      const panel = link.getAttribute('data-panel');
+      if (panel === 'site-content') {
+        loadSiteContentEditors();
+      } else if (panel === 'faq') {
+        loadFAQEditor();
+      } else if (panel === 'blogs') {
+        loadBlogs();
+      } else if (panel === 'messages') {
+        loadMessages();
+      } else if (panel === 'hakkimizda') {
+        loadHakkimizdaEditor();
+      }
     });
+  });
+}
+
+async function loadHakkimizdaEditor() {
+  try {
+    showLoader();
+    // Fetch hakkımızda content (assuming it’s stored in 'pages/hakkimizda')
+    const docRef = doc(db, 'pages', 'hakkimizda');
+    const docSnap = await getDoc(docRef);
+    let data = {};
+    if (docSnap.exists()) {
+      data = docSnap.data();
+    } else {
+      // Optionally, create default data if it doesn't exist
+      data = {
+        hero: { title: "Küçük Ekipler, Büyük İşler", subtitle: "EXIUS ekibiyle tanışın ve birlikte neler başardığımızı öğrenin." },
+        story: { heading: "Bizim Hikayemiz", content: "EXIUS, 2011 yılında ilk sunucu denemesine başladığında..." },
+        team: { heading: "Ekibimizle Tanışın", members: [
+          { role: "Kurucu", name: "Batuhan Tonga" },
+          { role: "Geliştirme Lideri", name: "Enes Aklık" },
+          // … add more members as needed
+        ]}
+      };
+      await setDoc(docRef, data);
+    }
+    
+    // Build the editor HTML
+    const editorHTML = `
+      <div class="editor-container">
+        <div class="editor-header">
+          <h2>Hakkımızda Sayfası Yönetimi</h2>
+          <button onclick="logoutAdmin()" class="logout-btn">Çıkış Yap</button>
+        </div>
+        <!-- Hero Section -->
+        <div class="editor-section">
+          <h3>Hero Bölümü</h3>
+          <div class="form-group">
+            <label for="hakkimizda-hero-title">Başlık (HTML destekli):</label>
+            <textarea id="hakkimizda-hero-title" rows="2">${data.hero.title}</textarea>
+          </div>
+          <div class="form-group">
+            <label for="hakkimizda-hero-subtitle">Alt Başlık:</label>
+            <textarea id="hakkimizda-hero-subtitle" rows="2">${data.hero.subtitle}</textarea>
+          </div>
+        </div>
+        <!-- Story Section -->
+        <div class="editor-section">
+          <h3>Hikaye Bölümü</h3>
+          <div class="form-group">
+            <label for="hakkimizda-story-heading">Başlık:</label>
+            <input type="text" id="hakkimizda-story-heading" value="${data.story.heading}">
+          </div>
+          <div class="form-group">
+            <label for="hakkimizda-story-content">İçerik:</label>
+            <textarea id="hakkimizda-story-content" rows="4">${data.story.content}</textarea>
+          </div>
+        </div>
+        <!-- Team Section -->
+        <div class="editor-section">
+          <h3>Ekibimiz</h3>
+          <div class="form-group">
+            <label for="hakkimizda-team-heading">Başlık:</label>
+            <input type="text" id="hakkimizda-team-heading" value="${data.team.heading}">
+          </div>
+          <div class="form-group" style="margin-top:20px">
+            <label>Üyeler:</label>
+            <div id="team-members-editor">
+              ${data.team.members.map((member, i) => `
+                <div class="team-member-editor">
+                  <label>Üye ${i+1}</label>
+                  <input type="text" id="member-role-${i}" placeholder="Rol" value="${member.role}">
+                  <input type="text" id="member-name-${i}" placeholder="İsim" value="${member.name}">
+                  <button type="button" onclick="removeTeamMember(${i})" class="update-btn">Sil</button>
+                </div>
+              `).join('')}
+            </div>
+            <button type="button" onclick="addTeamMember()" class="update-btn">Yeni Üye Ekle</button>
+          </div>
+        </div>
+        <button onclick="updateHakkimizdaContent()" class="update-btn">Güncelle</button>
+      </div>
+    `;
+    
+    // Inject editor HTML into a dedicated container
+    document.getElementById('site-content-editor').innerHTML = editorHTML;
+    document.getElementById('site-content-editor').style.display = 'block';
+    document.getElementById('faq-editor').style.display = 'none';
+    document.getElementById('messages-editor').style.display = 'none';
+    document.getElementById('blogs-editor').style.display = 'none';
+  
+  } catch (error) {
+    console.error("Error loading hakkımızda editor:", error);
+    alert("Hakkımızda içeriği yüklenirken hata oluştu: " + error.message);
+  } finally {
+    hideLoader();
   }
+}
 
 // ---------- SITE CONTENT (Hero, Stats, Cards) ----------
 async function loadSiteContentEditors() {
@@ -417,6 +513,67 @@ function createFAQEditor(data) {
     }
   };
   
+  window.updateHakkimizdaContent = async function() {
+    try {
+      showLoader();
+      // Build updated data from the form fields
+      const updatedData = {
+        hero: {
+          title: document.getElementById('hakkimizda-hero-title').value,
+          subtitle: document.getElementById('hakkimizda-hero-subtitle').value
+        },
+        story: {
+          heading: document.getElementById('hakkimizda-story-heading').value,
+          content: document.getElementById('hakkimizda-story-content').value
+        },
+        team: {
+          heading: document.getElementById('hakkimizda-team-heading').value,
+          members: []
+        }
+      };
+  
+      // Gather team members info
+      const teamEditor = document.getElementById('team-members-editor');
+      // Assuming each member block has an index-based id:
+      teamEditor.querySelectorAll('.team-member-editor').forEach((memberEl, i) => {
+        const role = document.getElementById(`member-role-${i}`).value;
+        const name = document.getElementById(`member-name-${i}`).value;
+        updatedData.team.members.push({ role, name });
+      });
+      
+      // Update Firestore
+      const docRef = doc(db, 'pages', 'hakkimizda');
+      await updateDoc(docRef, updatedData);
+      alert('Hakkımızda içeriği güncellendi!');
+    } catch (error) {
+      console.error('Hakkımızda güncelleme hatası:', error);
+      alert('Güncelleme hatası: ' + error.message);
+    } finally {
+      hideLoader();
+    }
+  };
+  
+  window.addTeamMember = function() {
+    const teamEditor = document.getElementById('team-members-editor');
+    const index = teamEditor.children.length;
+    const memberHTML = `
+      <div class="team-member-editor">
+        <label>Üye ${index + 1}</label>
+        <input type="text" id="member-role-${index}" placeholder="Rol" value="">
+        <input type="text" id="member-name-${index}" placeholder="İsim" value="">
+        <button type="button" onclick="removeTeamMember(${index})">Sil</button>
+      </div>
+    `;
+    teamEditor.insertAdjacentHTML('beforeend', memberHTML);
+  };
+  
+  window.removeTeamMember = function(index) {
+    const teamEditor = document.getElementById('team-members-editor');
+    // Remove the corresponding member block
+    const memberBlock = teamEditor.querySelector(`#member-role-${index}`).closest('.team-member-editor');
+    if (memberBlock) memberBlock.remove();
+  };
+  
 /** 
  * Update the FAQ doc in Firestore with the new question/answer data 
  */
@@ -687,8 +844,35 @@ async function initializeSiteContent() {
       ];
       await updateDoc(faqRef, { socialLinks: existingFAQ.socialLinks });
     }
+  }
+
+  // 5) Hakkımızda
+  // Storing hakkımızda content in a separate 'pages' collection.
+  let hakkimizdaRef = doc(db, 'pages', 'hakkimizda');
+  let hakkimizdaSnap = await getDoc(hakkimizdaRef);
+  if (!hakkimizdaSnap.exists()) {
+    await setDoc(hakkimizdaRef, {
+      hero: {
+        title: "Küçük Ekipler, Büyük İşler",
+        subtitle: "EXIUS ekibiyle tanışın ve birlikte neler başardığımızı öğrenin."
+      },
+      story: {
+        heading: "Bizim Hikayemiz",
+        content: "EXIUS, 2011 yılında ilk sunucu denemesine başladığında küçük bir toplulukla yola çıktı. Kısa sürede büyüyen bu topluluk, profesyonel oyun sunucuları kurma ve yönetme tutkumuzu harekete geçirdi."
+      },
+      team: {
+        heading: "Ekibimizle Tanışın",
+        members: [
+          { role: "Kurucu", name: "Batuhan Tonga" },
+          { role: "Geliştirme Lideri", name: "Enes Aklık" },
+          { role: "Front-end Geliştirme", name: "Enes Bayraktar & Furkan Öztürk" },
+          { role: "Back-end Geliştirme", name: "Muhammet Sanaga & Furkan Öztürk" }
+        ]
+      }
+    });
+  }
 }
-}
+
 
 /** Helper to get doc data from Firestore */
 async function getContentSection(sectionName) {

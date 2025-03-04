@@ -19,63 +19,112 @@
   <header-component></header-component>
 
   <!-- HERO BÖLÜMÜ -->
-  <section class="about-hero active">
-    <div class="about-hero-container">
-      <h1>Küçük Ekipler, Büyük İşler</h1>
-      <p>EXIUS ekibiyle tanışın ve birlikte neler başardığımızı öğrenin.</p>
+  <section id="about-hero" class="about-hero active section">
+    <div id="about-hero-container" class="about-hero-container">
+      <h1 id="hero-title"></h1>
+      <p id="hero-subtitle"></p>
     </div>
   </section>
 
   <!-- HİKAYE BÖLÜMÜ -->
-  <section class="story-section active">
-    <div class="story-container">
-      <h2>Bizim Hikayemiz</h2>
-      <p>
-        EXIUS, 2011 yılında ilk sunucu denemesine başladığında küçük bir toplulukla yola çıktı.
-        Ancak kısa sürede büyüyen bu topluluk, profesyonel oyun sunucuları kurma ve yönetme
-        tutkumuzu harekete geçirdi.
-      </p>
-      <ul>
-        <li><strong>01 - Kuruluş:</strong> Toplulukların ihtiyacını görünce en iyi sunucuları sağlamak için çalışmaya başladık.</li>
-        <li><strong>02 - Deneyim:</strong> Her yıl hem altyapımızı hem de oyuncularla etkileşimimizi geliştiriyoruz.</li>
-        <li><strong>03 - Resmileşme:</strong> Artan talep ve büyüyen ekibimizle, profesyonel ölçekte hizmet vermeye odaklandık.</li>
-        <li><strong>04 - Büyüme:</strong> Şu an yeni projeler üzerinde çalışıyor, daha büyük topluluklara ulaşmak için heyecan duyuyoruz.</li>
-      </ul>
+  <section id="story-section" class="story-section active section">
+    <div id="story-container" class="story-container">
+      <h2 id="story-heading"></h2>
+      <p id="story-content"></p>
+      <ul id="story-list"></ul>
     </div>
   </section>
 
   <!-- EKİP BÖLÜMÜ -->
-  <section class="team-section active">
-    <div class="team-container">
-      <h2>Ekibimizle Tanışın</h2>
-      
-      <div class="team-row">
-        <h3>Kurucu</h3>
-        <p>Batuhan Tonga</p>
-      </div>
-      <div class="team-row">
-        <h3>Geliştirme Lideri</h3>
-        <p>Enes Aklık</p>
-      </div>
-      <div class="team-row">
-        <h3>Front-end Geliştirme</h3>
-        <p>Enes Bayraktar &mdash; Furkan Öztürk</p>
-      </div>
-      <div class="team-row">
-        <h3>Back-end Geliştirme</h3>
-        <p>Muhammet Sanaga &mdash; Furkan Öztürk</p>
-      </div>
+  <section id="team-section" class="team-section active section">
+    <div id="team-container" class="team-container">
+      <h2 id="team-heading"></h2>
+      <!--
+        team-members will be populated dynamically.
+        Each member is wrapped in <div class="team-row"> inside JS.
+      -->
+      <div id="team-members"></div>
     </div>
   </section>
 
   <!-- Footer (Mevcut Bileşen) -->
   <footer-component></footer-component>
 
-  <!-- Loader (isteğe bağlı, sitenizde zaten kullanılıyorsa) -->
+  <!-- Loader -->
   <div id="loader" class="loader-overlay" style="display:none;">
     <div class="loader-spinner"></div>
   </div>
-
+  
+  <!-- Content Loader Script -->
+  <script type="module">
+    import { db } from '../../firebase-config.js';
+    import { doc, getDoc } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+    
+    // Show/hide loader
+    function showLoader() {
+      const loaderEl = document.getElementById('loader');
+      if (loaderEl) loaderEl.style.display = 'flex';
+    }
+    function hideLoader() {
+      const loaderEl = document.getElementById('loader');
+      if (loaderEl) loaderEl.style.display = 'none';
+    }
+    
+    // Load the hakkımızda content from Firestore
+    async function loadHakkimizdaContent() {
+      showLoader();
+      try {
+        const docRef = doc(db, 'pages', 'hakkimizda');
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          
+          // HERO
+          document.getElementById('hero-title').innerHTML = data.hero.title;
+          document.getElementById('hero-subtitle').innerHTML = data.hero.subtitle;
+          
+          // STORY
+          document.getElementById('story-heading').innerText = data.story.heading;
+          document.getElementById('story-content').innerText = data.story.content;
+          const storyList = document.getElementById('story-list');
+          storyList.innerHTML = '';
+          if (data.story.bullets) {
+            data.story.bullets.forEach(item => {
+              const li = document.createElement('li');
+              li.innerText = item;
+              storyList.appendChild(li);
+            });
+          }
+          
+          // TEAM
+          document.getElementById('team-heading').innerText = data.team.heading;
+          const teamMembersDiv = document.getElementById('team-members');
+          teamMembersDiv.innerHTML = '';
+          
+          // For each team member, create a div with .team-row
+          data.team.members.forEach(member => {
+            const memberEl = document.createElement('div');
+            memberEl.classList.add('team-row');
+            memberEl.innerHTML = `
+              <h3>${member.role}</h3>
+              <p>${member.name}</p>
+            `;
+            teamMembersDiv.appendChild(memberEl);
+          });
+        } else {
+          console.error("Hakkımızda dokümanı bulunamadı.");
+        }
+      } catch (error) {
+        console.error("Hakkımızda içeriği yüklenirken hata oluştu: ", error);
+      } finally {
+        hideLoader();
+      }
+    }
+    
+    // Load the page content
+    loadHakkimizdaContent();
+  </script>
+  
   <!-- Kütüphaneler -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>

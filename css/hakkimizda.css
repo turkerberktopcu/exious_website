@@ -1,11 +1,22 @@
-/* Bu dosya, style.css'teki ana stillerin üzerine sayfaya özel eklemeler yapar */
-.story-section,
-.team-section,
-.about-hero{
-  background: rgba(10, 10, 10, 0.8) !important;
-  /* Veya backdrop-filter: blur(5px) ile bulanık efekt ekleyebilirsiniz */
+/* Modern Layout and Design for EXIUS About Page */
+:root {
+    --primary-color: #ff4757;
+    --secondary-color: #ff6b81;
+    --background-dark: #121212;
+    --text-light: #e0e0e0;
+    --text-muted: #9e9e9e;
 }
-/* Arka Plan Canvas */
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: var(--background-dark);
+    color: var(--text-light);
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
 #bg-canvas {
     position: fixed;
     top: 0;
@@ -13,134 +24,181 @@
     width: 100%;
     height: 100%;
     z-index: -1;
-    opacity: 0.7; /* Arka planın hafif transparan olması */
-  }
-  
-  /* HERO BÖLÜMÜ */
-  .about-hero {
+    opacity: 0.5;
+}
+
+.section {
     position: relative;
-    min-height: 60vh;
-    width: 100%;
+    padding: 6rem 2rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
-    overflow: hidden;
-  }
-  
-  .about-hero-container {
-    max-width: 900px;
+}
+
+/* Hero Section */
+.about-hero {
+    min-height: 70vh;
+    background: linear-gradient(135deg, rgba(18, 18, 18, 0.95) 0%, rgba(30, 30, 30, 0.95) 100%);
     text-align: center;
-  }
-  
-  .about-hero-container h1 {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-    background: linear-gradient(45deg, #ffbec8 0%, #ff6b81 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-  
-  .about-hero-container p {
-    font-size: 1.2rem;
-    color: #dcdde1;
-    line-height: 1.5;
-  }
-  
-  /* HİKAYE BÖLÜMÜ */
-  .story-section {
-    position: relative;
-    background: transparent;
-    padding: 4rem 2rem;
-    text-align: left;
-  }
-  
-  .story-container {
+}
+
+.about-hero-container {
     max-width: 800px;
-    margin: 0 auto;
-  }
-  
-  .story-container h2 {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-    background: linear-gradient(45deg, #ff4757, #ff6b81);
+    padding: 2rem;
+    background: rgba(30, 30, 30, 0.6);
+    border-radius: 16px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+.about-hero-container h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-  }
-  
-  .story-container p {
-    font-size: 1rem;
-    color: #dcdde1;
-    line-height: 1.6;
-    margin-bottom: 2rem;
-  }
-  
-  .story-container ul {
+    margin-bottom: 1rem;
+    line-height: 1.2;
+}
+
+.about-hero-container p {
+    font-size: 1.25rem;
+    color: var(--text-muted);
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* Story Section */
+.story-section {
+    background: linear-gradient(135deg, rgba(18, 18, 18, 0.95) 0%, rgba(30, 30, 30, 0.95) 100%);
+}
+
+.story-container {
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.story-container h2 {
+    font-size: 2.5rem;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    position: relative;
+    padding-bottom: 0.5rem;
+}
+
+.story-container h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100px;
+    height: 4px;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+}
+
+.story-container ul {
     list-style: none;
     padding: 0;
-  }
-  
-  .story-container li {
-    margin-bottom: 1rem;
-    color: #fff;
-  }
-  
-  .story-container li strong {
-    color: #ff4757;
-  }
-  
-  /* EKİP BÖLÜMÜ */
-  .team-section {
-    position: relative;
-    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
-    padding: 4rem 2rem;
-    text-align: left;
-  }
-  
-  .team-container {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.story-container li {
+    background: rgba(40, 40, 40, 0.6);
+    padding: 1.5rem;
+    border-radius: 12px;
+    transition: transform 0.3s ease;
+}
+
+.story-container li:hover {
+    transform: translateY(-10px);
+}
+
+.story-container li strong {
+    color: var(--primary-color);
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+/* Team Section */
+.team-section {
+    background: linear-gradient(135deg, rgba(18, 18, 18, 0.95) 0%, rgba(30, 30, 30, 0.95) 100%);
+}
+
+.team-container {
     max-width: 800px;
-    margin: 0 auto;
-  }
-  
-  .team-container h2 {
-    font-size: 2rem;
-    margin-bottom: 2rem;
-    background: linear-gradient(45deg, #ff4757, #ff6b81);
+    display: grid;
+    gap: 2rem;
+    width: 80%;
+}
+
+.team-container h2 {
+    font-size: 2.5rem;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-  }
-  
-  .team-row {
-    margin-bottom: 1rem;
-  }
-  
-  .team-row h3 {
-    display: inline-block;
-    margin-right: 1rem;
-    color: #fff;
-    font-size: 1.1rem;
+    position: relative;
+    padding-bottom: 0.5rem;
+}
+
+.team-container h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100px;
+    height: 4px;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+}
+.team-row {
+    background: rgba(40, 40, 40, 0.6);
+    padding: 1.5rem;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.3s ease;
+    margin-top: 20px;
+}
+
+.team-row:hover {
+    transform: translateY(-10px);
+}
+
+.team-row h3 {
+    color: var(--text-muted);
     text-transform: uppercase;
-  }
-  
-  .team-row p {
-    display: inline-block;
-    font-size: 1rem;
-    color: #dcdde1;
-  }
-  
-  /* Responsive Düzen */
-  @media (max-width: 768px) {
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.team-row p {
+    font-size: 1.2rem;
+    margin: 0;
+    color: var(--text-light);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
     .about-hero-container h1 {
-      font-size: 2rem;
+        font-size: 2.5rem;
     }
-    
+
     .about-hero-container p {
-      font-size: 1rem;
+        font-size: 1rem;
     }
-    
-    .story-container h2,
-    .team-container h2 {
-      font-size: 1.5rem;
+
+    .story-container,
+    .team-container {
+        padding: 1rem;
     }
-  }
-  
+
+    .team-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+}
