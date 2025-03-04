@@ -1,0 +1,146 @@
+/* Bu dosya, style.css'teki ana stillerin üzerine sayfaya özel eklemeler yapar */
+.story-section,
+.team-section,
+.about-hero{
+  background: rgba(10, 10, 10, 0.8) !important;
+  /* Veya backdrop-filter: blur(5px) ile bulanık efekt ekleyebilirsiniz */
+}
+/* Arka Plan Canvas */
+#bg-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0.7; /* Arka planın hafif transparan olması */
+  }
+  
+  /* HERO BÖLÜMÜ */
+  .about-hero {
+    position: relative;
+    min-height: 60vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+    overflow: hidden;
+  }
+  
+  .about-hero-container {
+    max-width: 900px;
+    text-align: center;
+  }
+  
+  .about-hero-container h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(45deg, #ffbec8 0%, #ff6b81 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .about-hero-container p {
+    font-size: 1.2rem;
+    color: #dcdde1;
+    line-height: 1.5;
+  }
+  
+  /* HİKAYE BÖLÜMÜ */
+  .story-section {
+    position: relative;
+    background: transparent;
+    padding: 4rem 2rem;
+    text-align: left;
+  }
+  
+  .story-container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .story-container h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(45deg, #ff4757, #ff6b81);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .story-container p {
+    font-size: 1rem;
+    color: #dcdde1;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+  }
+  
+  .story-container ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .story-container li {
+    margin-bottom: 1rem;
+    color: #fff;
+  }
+  
+  .story-container li strong {
+    color: #ff4757;
+  }
+  
+  /* EKİP BÖLÜMÜ */
+  .team-section {
+    position: relative;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+    padding: 4rem 2rem;
+    text-align: left;
+  }
+  
+  .team-container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .team-container h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    background: linear-gradient(45deg, #ff4757, #ff6b81);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .team-row {
+    margin-bottom: 1rem;
+  }
+  
+  .team-row h3 {
+    display: inline-block;
+    margin-right: 1rem;
+    color: #fff;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+  }
+  
+  .team-row p {
+    display: inline-block;
+    font-size: 1rem;
+    color: #dcdde1;
+  }
+  
+  /* Responsive Düzen */
+  @media (max-width: 768px) {
+    .about-hero-container h1 {
+      font-size: 2rem;
+    }
+    
+    .about-hero-container p {
+      font-size: 1rem;
+    }
+    
+    .story-container h2,
+    .team-container h2 {
+      font-size: 1.5rem;
+    }
+  }
+  

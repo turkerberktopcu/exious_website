@@ -1,7 +1,36 @@
 // js/script.js
 import { db } from '../firebase-config.js';
 import { doc, getDoc } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.167.1/build/three.module.js';
 
+/*
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('hero-canvas'), alpha: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+
+const geometry = new THREE.TorusKnotGeometry(10, 3, 100, 16);
+const material = new THREE.MeshBasicMaterial({ color: 0xff4757, wireframe: true });
+const torusKnot = new THREE.Mesh(geometry, material);
+scene.add(torusKnot);
+
+camera.position.z = 30;
+
+function animate() {
+  requestAnimationFrame(animate);
+  torusKnot.rotation.x += 0.01;
+  torusKnot.rotation.y += 0.01;
+  renderer.render(scene, camera);
+}
+animate();
+
+// Handle Window Resize
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+*/
 /** 
  * 1) Fetch Firestore data and populate UI 
  */
@@ -85,15 +114,13 @@ function initGSAPAnimations() {
     return; // Exit if ScrollTrigger isn't available
   }
 
+  // Hero animation
   gsap.from(".hero-content", {
     duration: 1.5,
     y: 100,
     opacity: 0,
-    scale: 0.9,  // Küçük başlar ve büyüyerek açılır
     ease: "power4.out"
-});
-
-
+  });
 
   // Enhanced Cards animation
   const cards = document.querySelectorAll('.card');
@@ -248,31 +275,4 @@ function showLoader() {
     const loaderEl = document.getElementById('loader');
     if (loaderEl) loaderEl.style.display = 'none';
   }
-  // Inside your DOMContentLoaded event listener
-function animateStats() {
-  gsap.from('.stat-number', {
-    scrollTrigger: { trigger: '.stats', start: 'top 80%' },
-    textContent: 0,
-    duration: 2,
-    ease: 'power1.out',
-    snap: { textContent: 1 },
-    stagger: 0.2,
-    onUpdate: function () {
-      this.targets().forEach(target => {
-        const value = Math.round(target.textContent);
-        target.textContent = value.toLocaleString('tr-TR') + (target.dataset.suffix || '');
-      });
-    }
-  });
-}
-
-document.querySelectorAll('.stat-item').forEach((item, i) => {
-    const numberEl = item.querySelector('.stat-number');
-    numberEl.textContent = stats[i].number;
-    numberEl.dataset.suffix = stats[i].suffix;
-    item.querySelector('.stat-title').textContent = stats[i].title;
-  });
-  document.querySelector('.stats h2').textContent = 'Rakamlarla EXIUS';
-  document.querySelector('.stats p').textContent = 'Gücümüzü ve etkilerimizi sayılarla keşfedin.';
   
-  animateStats(); 
