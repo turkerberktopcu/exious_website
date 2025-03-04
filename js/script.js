@@ -6,11 +6,10 @@ import { doc, getDoc } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-
  * 1) Fetch Firestore data and populate UI 
  */
 async function loadDynamicContent() {
-  // (Optional) If you have a loading indicator in your HTML
-  const loadingEl = document.getElementById('loading');
-  if (loadingEl) loadingEl.style.display = 'block';
+
 
   try {
+    showLoader();
     // HERO
     const heroData = await getContentSection('hero');
     if (heroData) {
@@ -49,9 +48,8 @@ async function loadDynamicContent() {
   } catch (error) {
     console.error('Error loading dynamic content:', error);
   } finally {
-    // Hide loading indicator
-    if (loadingEl) loadingEl.style.display = 'none';
-  }
+        hideLoader();
+    }
 }
 
 /** Helper to get doc data from Firestore */
@@ -87,13 +85,15 @@ function initGSAPAnimations() {
     return; // Exit if ScrollTrigger isn't available
   }
 
-  // Hero animation
   gsap.from(".hero-content", {
     duration: 1.5,
     y: 100,
     opacity: 0,
+    scale: 0.9,  // Küçük başlar ve büyüyerek açılır
     ease: "power4.out"
-  });
+});
+
+
 
   // Enhanced Cards animation
   const cards = document.querySelectorAll('.card');
@@ -238,3 +238,41 @@ window.addEventListener('load', async () => {
   await loadDynamicContent();  // 1) Firestore fetch
   initGSAPAnimations();        // 2) GSAP animations
 });
+
+function showLoader() {
+    const loaderEl = document.getElementById('loader');
+    if (loaderEl) loaderEl.style.display = 'flex';
+  }
+  
+  function hideLoader() {
+    const loaderEl = document.getElementById('loader');
+    if (loaderEl) loaderEl.style.display = 'none';
+  }
+  // Inside your DOMContentLoaded event listener
+function animateStats() {
+  gsap.from('.stat-number', {
+    scrollTrigger: { trigger: '.stats', start: 'top 80%' },
+    textContent: 0,
+    duration: 2,
+    ease: 'power1.out',
+    snap: { textContent: 1 },
+    stagger: 0.2,
+    onUpdate: function () {
+      this.targets().forEach(target => {
+        const value = Math.round(target.textContent);
+        target.textContent = value.toLocaleString('tr-TR') + (target.dataset.suffix || '');
+      });
+    }
+  });
+}
+
+document.querySelectorAll('.stat-item').forEach((item, i) => {
+    const numberEl = item.querySelector('.stat-number');
+    numberEl.textContent = stats[i].number;
+    numberEl.dataset.suffix = stats[i].suffix;
+    item.querySelector('.stat-title').textContent = stats[i].title;
+  });
+  document.querySelector('.stats h2').textContent = 'Rakamlarla EXIUS';
+  document.querySelector('.stats p').textContent = 'Gücümüzü ve etkilerimizi sayılarla keşfedin.';
+  
+  animateStats(); 

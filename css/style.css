@@ -20,8 +20,7 @@ section {
     justify-content: center;
     padding: 2rem;
     opacity: 0;
-    transform: translateY(50px);
-    transition: all 1s ease-out;
+  
     position: relative;
 }
 
@@ -120,63 +119,87 @@ h1 {
 }
 /* Stats Section */
 .stats {
-    background: #0d0d0d;
-    padding: 4rem 2rem;
+  background: linear-gradient(145deg, #000000, #1a1a1a);
+  padding: 6rem 2rem;
+  position: relative;
+  overflow: hidden;
 }
 
+
+
+
 .stats-intro {
-    text-align: center;
-    margin-bottom: 3rem;
-    color: #fff;
+  text-align: center;
+  margin-bottom: 4rem;
+  position: relative;
+  z-index: 2;
 }
 
 .stats-intro h2 {
-    font-size: 2.5rem;
-    background: linear-gradient(45deg, #ff4757 0%, #ff6b81 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-bottom: 1rem;
+  font-size: 2.8rem;
+  background: linear-gradient(45deg, #ff4757, #ff6b81);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 20px rgba(255, 71, 87, 0.3);
+  margin-bottom: 1.5rem;
 }
 
 .stats-intro p {
-    font-size: 1.2rem;
-    color: #dcdde1;
-    max-width: 800px;
-    margin: 0 auto;
+  font-size: 1.3rem;
+  color: #dcdde1;
+  max-width: 800px;
+  margin: 0 auto;
+  line-height: 1.6;
 }
 
 .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 6rem;
-    text-align: center;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
 }
 
 .stat-item {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: linear-gradient(145deg, #1a1a1a, #2a2a2a);
+  border: 1px solid rgba(255, 71, 87, 0.4);
+  border-radius: 15px;
+  padding: 2rem;
+  text-align: center;
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
 }
 
 .stat-item:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 10px 20px rgba(255,71,87,0.2);
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(255, 71, 87, 0.25);
+  border-color: rgba(255, 71, 87, 0.6);
 }
-
+.stat-item:hover::before {
+  transform: scale(1.5);
+}
 .stat-number {
-    font-size: 4rem;
-    font-weight: 700;
-    background: linear-gradient(45deg, #ff4757 0%, #ff6b81 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-bottom: 1rem;
+  font-size: 4.5rem;
+  font-weight: 700;
+  background: linear-gradient(45deg, #ff4757, #ff6b81);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 1rem;
+  position: relative;
+  z-index: 1;
 }
 
 .stat-title {
-    font-size: 1.2rem;
-    color: #dcdde1;
-    text-transform: uppercase;
-    letter-spacing: 2px;
+  font-size: 1.3rem;
+  color: #dcdde1;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  position: relative;
+  z-index: 1;
 }
-
 
 
 .nav-links a:hover::after {
@@ -189,8 +212,20 @@ h1 {
     }
 
     .stats-grid {
-        grid-template-columns: 1fr;
-        gap: 3rem;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    .stat-number {
+      font-size: 3.5rem;
+    }
+    .stat-title {
+      font-size: 1.1rem;
+    }
+    .stats-intro h2 {
+      font-size: 2rem;
+    }
+    .stats-intro p {
+      font-size: 1.1rem;
     }
 
     .hero p {
@@ -208,6 +243,10 @@ h1 {
     justify-content: center;
     align-items: center;
     perspective: 1000px;
+    
+    will-change: transform, opacity;
+
+
   }
   
   .cards-container {
@@ -357,6 +396,8 @@ h1 {
   text-align: center;
   overflow: hidden;
   padding: 4rem 2rem;
+  transform: translateY(50px);
+  transition: all 1s ease-out;
 }
 
 /* Scanning neon lines, same style as hero */
@@ -467,4 +508,34 @@ h1 {
 @keyframes orbFloat {
   0% { transform: translateY(0) translateX(0); }
   100% { transform: translateY(-20px) translateX(20px); }
+}
+
+
+/* LOADER OVERLAY */
+.loader-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(10, 10, 10, 0.8); /* dark overlay with slight transparency */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999; /* above everything */
+}
+
+.loader-spinner {
+  width: 60px;
+  height: 60px;
+  border: 6px solid rgba(255,71,87,0.3); /* outer ring */
+  border-top-color: #ff4757;             /* neon accent color */
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* Spinner keyframes */
+@keyframes spin {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

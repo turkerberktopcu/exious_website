@@ -1,36 +1,426 @@
+/********************************
+  CONTACT HERO
+*********************************/
+.contact-hero {
+  position: relative;
+  min-height: 50vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+  padding: 4rem 2rem;
+  background: linear-gradient(
+      45deg,
+      rgba(10, 10, 10, 0.95) 0%,
+      rgba(26, 26, 26, 0.85) 100%
+    ),
+    repeating-linear-gradient(
+      10deg,
+      rgba(255, 71, 87, 0.08) 0px,
+      rgba(255, 71, 87, 0.08) 2px,
+      transparent 2px,
+      transparent 4px
+    );
+}
 
-  import { db } from '../firebase-config.js'; 
-  import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+/* Subtle scanning lines overlay */
+.contact-hero::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: repeating-linear-gradient(
+    10deg,
+    rgba(255, 71, 87, 0.04) 0px,
+    rgba(255, 71, 87, 0.04) 2px,
+    transparent 2px,
+    transparent 4px
+  );
+  pointer-events: none;
+  z-index: 0;
+}
 
-  // 1) Grab the form
-  const contactForm = document.querySelector('.contact-form');
+.contact-hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+  margin: 0 auto;
+}
 
-  // 2) Listen for form submit
-  contactForm.addEventListener('submit', async (e) => {
-    e.preventDefault(); // prevent default page reload
+/* Optional glitch effect on hero title */
+.glitch-text {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  background: linear-gradient(45deg, #ff4757 0%, #ff6b81 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 0 0 30px rgba(255, 71, 87, 0.3);
+}
+/********************************
+MODERNIZED STYLES & ANIMATIONS
+*********************************/
 
-    // 3) Get input values
-    const nameValue = document.getElementById('name').value;
-    const emailValue = document.getElementById('email').value;
-    const messageValue = document.getElementById('message').value;
+/* Smooth fade-in effect for the entire page */
+body {
+animation: fadeInPage 1s ease-in;
+}
+@keyframes fadeInPage {
+from { opacity: 0; }
+to { opacity: 1; }
+}
 
-    try {
-      // 4) Add a new doc in "contact_messages" collection (create if not exist)
-      await addDoc(collection(db, 'contact_messages'), {
-        name: nameValue,
-        email: emailValue,
-        message: messageValue,
-        createdAt: serverTimestamp() // optional timestamp
-      });
+/* Existing styles remain, for example: */
 
-      // 5) Alert or show success message
-      alert('Mesajınız başarıyla gönderildi!');
+.contact-hero {
+  position: relative;
+  min-height: 50vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+  padding: 4rem 2rem;
+  background: linear-gradient(
+      45deg,
+      rgba(10, 10, 10, 0.95) 0%,
+      rgba(26, 26, 26, 0.85) 100%
+    ),
+    repeating-linear-gradient(
+      10deg,
+      rgba(255, 71, 87, 0.08) 0px,
+      rgba(255, 71, 87, 0.08) 2px,
+      transparent 2px,
+      transparent 4px
+    );
+}
 
-      // 6) Reset the form
-      contactForm.reset();
-    } catch (error) {
-      console.error('Form gönderilirken hata oluştu:', error);
-      alert('Gönderim hatası: ' + error.message);
-    }
-  });
+.contact-hero::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: repeating-linear-gradient(
+    10deg,
+    rgba(255, 71, 87, 0.04) 0px,
+    rgba(255, 71, 87, 0.04) 2px,
+    transparent 2px,
+    transparent 4px
+  );
+  pointer-events: none;
+  z-index: 0;
+}
 
+.contact-hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Glitch text with gradient */
+.glitch-text {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  background: linear-gradient(45deg, #ff4757 0%, #ff6b81 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 0 0 30px rgba(255, 71, 87, 0.3);
+}
+/* 3D Canvas styling */
+#three-canvas {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+z-index: 0;
+pointer-events: none;
+}
+
+
+/* Floating neon orbs */
+.contact-decor.orb {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  background: #ff4757;
+  border-radius: 50%;
+  filter: blur(40px);
+  opacity: 0.25;
+  z-index: 1;
+}
+.orb1 {
+  top: 20%;
+  left: 10%;
+}
+.orb2 {
+  bottom: 20%;
+  right: 15%;
+}
+/* Simple "skew glitch" animation */
+
+.contact-hero-content p {
+  font-size: 1.2rem;
+  color: #dcdde1;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.5;
+  font-weight: 300;
+}
+
+
+/* Floating neon orbs */
+.contact-decor.orb {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  background: #ff4757;
+  border-radius: 50%;
+  filter: blur(40px);
+  opacity: 0.25;
+  animation: orbFloat 6s infinite alternate ease-in-out;
+  z-index: 1;
+}
+.orb1 {
+  top: 20%;
+  left: 10%;
+}
+.orb2 {
+  bottom: 20%;
+  right: 15%;
+}
+
+/* Orb float animation */
+@keyframes orbFloat {
+  0% { transform: translateY(0) translateX(0); }
+  100% { transform: translateY(-20px) translateX(20px); }
+}
+
+/********************************
+  CONTACT SECTION
+*********************************/
+.contact-section {
+  position: relative;
+  background: #0d0d0d;
+  padding: 4rem 2rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.contact-container {
+  max-width: 600px;
+  margin: 0 auto;
+  z-index: 2;
+}
+
+.contact-container h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  background: linear-gradient(45deg, #ff4757 0%, #ff6b81 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.contact-container p {
+  font-size: 1rem;
+  color: #dcdde1;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+/* Glass-like card for the form */
+.contact-card {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  margin: 2rem auto;
+  perspective: 1000px;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.card-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, rgba(255, 71, 87, 0.2), rgba(255, 107, 129, 0.2));
+  filter: blur(4px);
+  z-index: 1;
+  transition: transform 0.3s;
+}
+
+.card-inner {
+  position: relative;
+  z-index: 2;
+  transform-style: preserve-3d;
+  transition: transform 0.3s;
+  background: rgba(17, 17, 17, 0.8);
+  border: 1px solid rgba(255, 71, 87, 0.3);
+  border-radius: 16px;
+  padding: 2rem;
+}
+
+.card-shimmer {
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
+  transform: skewX(-25deg);
+  z-index: 3;
+  pointer-events: none;
+}
+
+
+/* The form itself */
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #fff;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #ff4757;
+  background: #111;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 1rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  outline: none;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: #ff6b81;
+  box-shadow: 0 0 5px rgba(255, 71, 87, 0.5);
+}
+
+.contact-submit {
+  background: #ff4757;
+  border: none;
+  color: #fff;
+  padding: 1rem 2rem;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 1rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: background-color 0.3s, transform 0.3s;
+  align-self: center;
+}
+.contact-submit:hover {
+  background-color: #ff6b81;
+  transform: translateY(-3px);
+  box-shadow: 0 5px 25px rgba(255, 71, 87, 0.3);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .glitch-text {
+    font-size: 2rem;
+  }
+  .contact-hero-content p {
+    font-size: 1rem;
+  }
+  .contact-container {
+    width: 90%;
+  }
+}
+
+
+import { db } from '../firebase-config.js'; 
+import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+
+// 1) Grab the form
+const contactForm = document.querySelector('.contact-form');
+
+// 2) Listen for form submit
+contactForm.addEventListener('submit', async (e) => {
+  e.preventDefault(); // prevent default page reload
+
+  // 3) Get input values
+  const nameValue = document.getElementById('name').value;
+  const emailValue = document.getElementById('email').value;
+  const messageValue = document.getElementById('message').value;
+
+  try {
+    // 4) Add a new doc in "contact_messages" collection (create if not exist)
+    await addDoc(collection(db, 'contact_messages'), {
+      name: nameValue,
+      email: emailValue,
+      message: messageValue,
+      createdAt: serverTimestamp() // optional timestamp
+    });
+
+    // 5) Alert or show success message
+    alert('Mesajınız başarıyla gönderildi!');
+
+    // 6) Reset the form
+    contactForm.reset();
+  } catch (error) {
+    console.error('Form gönderilirken hata oluştu:', error);
+    alert('Gönderim hatası: ' + error.message);
+  }
+});
+
+// Select the contact card element
+const card = document.querySelector('.contact-card');
+
+// Add mousemove event to tilt the card based on mouse position
+card.addEventListener('mousemove', (e) => {
+const rect = card.getBoundingClientRect();
+// Calculate mouse position relative to the card's center
+const x = e.clientX - rect.left;
+const y = e.clientY - rect.top;
+const centerX = rect.width / 2;
+const centerY = rect.height / 2;
+// Determine the percentage offset from center
+const percentX = (x - centerX) / centerX;
+const percentY = (y - centerY) / centerY;
+
+// Tilt: Adjust these multipliers for more/less tilt
+const tiltY = percentX * 10; // rotate Y (left/right)
+const tiltX = -percentY * 10; // rotate X (up/down)
+
+gsap.to(card, { 
+  rotationY: tiltY, 
+  rotationX: tiltX, 
+  duration: 0.3, 
+  ease: "power2.out" 
+});
+});
+
+// Reset tilt when mouse leaves the card
+card.addEventListener('mouseleave', () => {
+gsap.to(card, { 
+  rotationY: 0, 
+  rotationX: 0, 
+  duration: 0.5, 
+  ease: "power2.out" 
+});
+});

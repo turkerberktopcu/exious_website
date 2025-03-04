@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EXIUS - Blog</title>
+  <!-- Fonts + main style -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="components/header/header.css" />
+  <link rel="stylesheet" href="css/blog.css" />
+</head>
+<body>
+  <!-- Three.js Background Canvas -->
+  <canvas id="bg-canvas"></canvas>
+
+  <!-- Header -->
+  <header-component></header-component>
+
+  <!-- BLOG LIST SECTION -->
+  <section class="blog-list-section active">
+    <div class="blog-list-container">
+      <!-- Blog cards populated via blog.js -->
+    </div>
+  </section>
+
+  <!-- BLOG MODAL -->
+  <div class="blog-modal-overlay">
+    <div class="blog-modal">
+      <button class="blog-modal-close">X</button>
+      <h2 class="blog-modal-title"></h2>
+      <p class="blog-modal-content"></p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer-component></footer-component>
+
+  <!-- Loader -->
+  <div id="loader" class="loader-overlay" style="display:none;">
+    <div class="loader-spinner"></div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <script src="components/header/header.js"></script>
+  <script type="module" src="components/footer/footer-component.js"></script>
+  <script type="module" src="js/blog.js"></script>
+</body>
+</html>

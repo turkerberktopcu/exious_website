@@ -59,7 +59,109 @@
     letter-spacing: 2px;
     text-shadow: 0 0 30px rgba(255, 71, 87, 0.3);
   }
-  
+  /********************************
+  MODERNIZED STYLES & ANIMATIONS
+*********************************/
+
+/* Smooth fade-in effect for the entire page */
+body {
+  animation: fadeInPage 1s ease-in;
+}
+@keyframes fadeInPage {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Existing styles remain, for example: */
+
+.contact-hero {
+    position: relative;
+    min-height: 50vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+    padding: 4rem 2rem;
+    background: linear-gradient(
+        45deg,
+        rgba(10, 10, 10, 0.95) 0%,
+        rgba(26, 26, 26, 0.85) 100%
+      ),
+      repeating-linear-gradient(
+        10deg,
+        rgba(255, 71, 87, 0.08) 0px,
+        rgba(255, 71, 87, 0.08) 2px,
+        transparent 2px,
+        transparent 4px
+      );
+}
+
+.contact-hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: repeating-linear-gradient(
+      10deg,
+      rgba(255, 71, 87, 0.04) 0px,
+      rgba(255, 71, 87, 0.04) 2px,
+      transparent 2px,
+      transparent 4px
+    );
+    pointer-events: none;
+    z-index: 0;
+}
+
+.contact-hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Glitch text with gradient */
+.glitch-text {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(45deg, #ff4757 0%, #ff6b81 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 0 0 30px rgba(255, 71, 87, 0.3);
+}
+/* 3D Canvas styling */
+#three-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+
+/* Floating neon orbs */
+.contact-decor.orb {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    background: #ff4757;
+    border-radius: 50%;
+    filter: blur(40px);
+    opacity: 0.25;
+    z-index: 1;
+}
+.orb1 {
+    top: 20%;
+    left: 10%;
+}
+.orb2 {
+    bottom: 20%;
+    right: 15%;
+}
   /* Simple "skew glitch" animation */
 
   .contact-hero-content p {
@@ -136,13 +238,50 @@
   
   /* Glass-like card for the form */
   .contact-card {
-    background: linear-gradient(145deg, #111111, #1a1a1a);
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    margin: 2rem auto;
+    perspective: 1000px;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  
+  .card-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(255, 71, 87, 0.2), rgba(255, 107, 129, 0.2));
+    filter: blur(4px);
+    z-index: 1;
+    transition: transform 0.3s;
+  }
+  
+  .card-inner {
+    position: relative;
+    z-index: 2;
+    transform-style: preserve-3d;
+    transition: transform 0.3s;
+    background: rgba(17, 17, 17, 0.8);
     border: 1px solid rgba(255, 71, 87, 0.3);
     border-radius: 16px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(6px);
     padding: 2rem;
   }
+  
+  .card-shimmer {
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
+    transform: skewX(-25deg);
+    z-index: 3;
+    pointer-events: none;
+  }
+  
   
   /* The form itself */
   .contact-form {

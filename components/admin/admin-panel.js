@@ -12,7 +12,9 @@ import {
   updateDoc,
   getDocs,
   collection,
-  deleteDoc  
+  deleteDoc,
+  serverTimestamp,
+  addDoc
 } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 
 // Listen for auth state changes
@@ -72,8 +74,10 @@ function setupAdminNav() {
         } else if (panel === 'faq') {
           loadFAQEditor();
         } else if (panel === 'messages') {
-          loadMessages(); // <-- NEW
-        }
+          loadMessages();
+        } else if (panel === 'blogs') {
+            loadBlogs(); 
+          }
       });
     });
   }
@@ -120,6 +124,83 @@ async function loadSiteContentEditors() {
     hideLoader();
   }
 }
+// NEW: loadBlogs()
+async function loadBlogs() {
+    try {
+      showLoader();
+  
+      // (Optional) ensure site content is initialized
+      await initializeSiteContent();
+  
+      // 1) Fetch all docs from "blogs" collection
+      const snapshot = await getDocs(collection(db, 'blogs'));
+  
+      // 2) Build the HTML for the blog editor
+      let blogHTML = `
+        <div class="editor-container">
+          <div class="editor-header">
+            <h2>Blog Yönetimi</h2>
+            <button onclick="logoutAdmin()" class="logout-btn">Çıkış Yap</button>
+          </div>
+  
+          <!-- CREATE NEW BLOG FORM -->
+          <div class="editor-section">
+            <h3>Yeni Blog Oluştur</h3>
+            <div class="form-group">
+              <label for="blog-title">Başlık:</label>
+              <input type="text" id="blog-title" placeholder="Blog Başlığı" />
+            </div>
+            <div class="form-group">
+              <label for="blog-excerpt">Özet:</label>
+              <textarea id="blog-excerpt" rows="2" placeholder="Kısa özet"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="blog-content">İçerik:</label>
+              <textarea id="blog-content" rows="5" placeholder="Tam blog içeriği"></textarea>
+            </div>
+            <button class="update-btn" onclick="createBlog()">Kaydet</button>
+          </div>
+  
+          <!-- LIST EXISTING BLOGS -->
+          <div class="editor-section">
+            <h3>Mevcut Bloglar</h3>
+      `;
+  
+      snapshot.forEach(docSnap => {
+        const docId = docSnap.id;
+        const data = docSnap.data();
+        const title = data.title || "Untitled Blog";
+  
+        blogHTML += `
+            <div class="card-item-editor">
+              <h4>${title}</h4>
+              <button class="update-btn" onclick="deleteBlog('${docId}')">Sil</button>
+            </div>
+        `;
+      });
+  
+      blogHTML += `
+          </div> <!-- end .editor-section -->
+        </div> <!-- end .editor-container -->
+      `;
+  
+      // 3) Insert into #blogs-editor, show it
+      document.getElementById('blogs-editor').innerHTML = blogHTML;
+      document.getElementById('blogs-editor').style.display = 'block';
+  
+      // Hide other editors
+      document.getElementById('site-content-editor').style.display = 'none';
+      document.getElementById('faq-editor').style.display = 'none';
+      document.getElementById('messages-editor').style.display = 'none';
+  
+    } catch (error) {
+      console.error("Error loading blogs:", error);
+      alert("Bloglar yüklenirken hata oluştu: " + error.message);
+    } finally {
+      hideLoader();
+    }
+  }
+  
 
 async function loadMessages() {
     try {
@@ -281,7 +362,47 @@ function createFAQEditor(data) {
       </div>
     `;
   }
-  
+    // NEW: createBlog()
+    window.createBlog = async function() {
+        try {
+          showLoader();
+      
+          const titleEl = document.getElementById('blog-title');
+          const excerptEl = document.getElementById('blog-excerpt');
+          const contentEl = document.getElementById('blog-content');
+      
+          const newBlog = {
+            title: titleEl.value,
+            excerpt: excerptEl.value,
+            content: contentEl.value,
+            createdAt: serverTimestamp()
+          };
+      
+          await addDoc(collection(db, 'blogs'), newBlog);
+          alert("Yeni blog eklendi!");
+          loadBlogs(); // Refresh the list
+        } catch (error) {
+          console.error("createBlog error:", error);
+          alert("Blog eklenirken hata: " + error.message);
+        } finally {
+          hideLoader();
+        }
+      };
+      
+      // NEW: deleteBlog(docId)
+      window.deleteBlog = async function(docId) {
+        try {
+          showLoader();
+          await deleteDoc(doc(db, 'blogs', docId));
+          alert("Blog silindi!");
+          loadBlogs(); // Refresh
+        } catch (error) {
+          console.error("deleteBlog error:", error);
+          alert("Blog silinirken hata: " + error.message);
+        } finally {
+          hideLoader();
+        }
+      };
   window.deleteMessage = async function(docId) {
     try {
       // Attempt to delete the doc
