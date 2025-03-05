@@ -27,12 +27,13 @@ function hideLoader() {
 function initThreeJS() {
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-  const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('bg-canvas'), alpha: true });
+  const canvas = document.getElementById('bg-canvas');
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
 
-  // Particle System
+  // Particle System - Reduced particle count for optimization
   const particlesGeometry = new THREE.BufferGeometry();
-  const particleCount = 1000;
+  const particleCount = 500; // reduced from 1000
   const positions = new Float32Array(particleCount * 3);
   for (let i = 0; i < particleCount * 3; i++) {
     positions[i] = (Math.random() - 0.5) * 1000; // Spread particles in 3D space
@@ -46,16 +47,23 @@ function initThreeJS() {
 
   function animate() {
     requestAnimationFrame(animate);
-    particles.rotation.y += 0.001;
-    renderer.render(scene, camera);
+    // Only animate if document is visible to reduce CPU load
+    if (!document.hidden) {
+      particles.rotation.y += 0.001;
+      renderer.render(scene, camera);
+    }
   }
   animate();
 
-  // Resize Handler
+  // Debounced Resize Handler
+  let resizeTimeout;
   window.addEventListener('resize', () => {
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+    }, 100);
   });
 }
 
@@ -110,28 +118,35 @@ window.addEventListener('DOMContentLoaded', async () => {
         duration: 0.8,
         ease: 'power3.out'
       });
-
-      // Add Click Events with GSAP Hover Effects
-      document.querySelectorAll('.blog-card').forEach(card => {
-        card.addEventListener('click', () => {
-          const cardTitle = decodeURIComponent(card.getAttribute('data-title'));
-          const cardContent = decodeURIComponent(card.getAttribute('data-content'));
-          openBlogModal(cardTitle, cardContent);
-        });
-
-        // Hover Animation
-        card.addEventListener('mouseenter', () => {
-          gsap.to(card, { scale: 1.05, duration: 0.3, ease: 'power2.out' });
-        });
-        card.addEventListener('mouseleave', () => {
-          gsap.to(card, { scale: 1, duration: 0.3, ease: 'power2.out' });
-        });
-      });
     }
   } catch (error) {
     console.error("Error fetching blogs:", error);
   } finally {
     hideLoader();
+  }
+});
+
+// Event Delegation for Blog Card Click and Hover Animations
+blogListContainer.addEventListener('click', (e) => {
+  const card = e.target.closest('.blog-card');
+  if (card) {
+    const cardTitle = decodeURIComponent(card.getAttribute('data-title'));
+    const cardContent = decodeURIComponent(card.getAttribute('data-content'));
+    openBlogModal(cardTitle, cardContent);
+  }
+});
+
+blogListContainer.addEventListener('mouseover', (e) => {
+  const card = e.target.closest('.blog-card');
+  if (card) {
+    gsap.to(card, { scale: 1.05, duration: 0.3, ease: 'power2.out' });
+  }
+});
+
+blogListContainer.addEventListener('mouseout', (e) => {
+  const card = e.target.closest('.blog-card');
+  if (card) {
+    gsap.to(card, { scale: 1, duration: 0.3, ease: 'power2.out' });
   }
 });
 
@@ -142,10 +157,11 @@ function openBlogModal(title, content) {
 
   modalOverlay.classList.add('active');
   gsap.fromTo(modalBox, 
-    { scale: 0.8, opacity: 0, y: 50 },
-    { scale: 1, opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }
+    { scale: 0.9, opacity: 0, y: 20 },
+    { scale: 1, opacity: 1, y: 0, duration: 0.3, ease: 'power2.out' }
   );
 }
+
 
 // Close Modal with GSAP Animation
 function closeBlogModal() {
