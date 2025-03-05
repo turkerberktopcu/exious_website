@@ -101,7 +101,7 @@ window.addEventListener('DOMContentLoaded', async () => {
                data-content="${encodeURIComponent(data.content || '')}">
             <div class="blog-card-header">
               <h3>${title}</h3>
-              <span class="blog-date">${dateString}</span>
+              <span class="blog-card-date">${dateString}</span>
             </div>
             <p class="blog-excerpt">${excerpt}</p>
           </div>

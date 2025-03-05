@@ -6,19 +6,19 @@
   <title>EXIUS - Profesyonel Oyun Sunucuları</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/blog-preview.css">
   <link rel="stylesheet" href="components/header/header.css">
 </head>
 <body>
   
-
   <section class="hero">
-   <!-- <canvas id="hero-canvas"></canvas>--> 
-
-      <div class="hero-content">
-          <h1></h1> <!-- Will be dynamically populated -->
-          <p></p>   <!-- Will be dynamically populated -->
-          <button class="cta-button"></button> <!-- Will be dynamically populated -->
-      </div>
+    <!-- Optionally uncomment the hero canvas if needed -->
+    <!-- <canvas id="hero-canvas"></canvas> -->
+    <div class="hero-content">
+      <h1></h1> <!-- Will be dynamically populated -->
+      <p></p>   <!-- Will be dynamically populated -->
+      <button class="cta-button"></button> <!-- Will be dynamically populated -->
+    </div>
   </section>
 
   <section class="stats">
@@ -46,23 +46,34 @@
     </div>
   </section>
   
-  
-  
+  <!-- Blog Section with Header & Sample Card -->
+  <section class="blog-list-section active">
+    <div class="blog-section-header">
+      <h2>Son Bloglar</h2>
+      <p>En güncel haberlerimizden ve makalelerimizden haberdar olun</p>
+    </div>
+    <div class="blog-list-container">
+      <!-- Sample Static Blog Card -->
+      <div class="blog-card"></div>
+      <!-- Dynamically loaded blog cards will appear here -->
+    </div>
+  </section>
+
   <section class="cards-section">
-      <div class="cards-container">
-        <div class="card">
-          <h3></h3> <!-- Will be dynamically populated -->
-          <p></p>   <!-- Will be dynamically populated -->
-        </div>
-        <div class="card">
-          <h3></h3> <!-- Will be dynamically populated -->
-          <p></p>   <!-- Will be dynamically populated -->
-        </div>
-        <div class="card">
-          <h3></h3> <!-- Will be dynamically populated -->
-          <p></p>   <!-- Will be dynamically populated -->
-        </div>
+    <div class="cards-container">
+      <div class="card">
+        <h3></h3> <!-- Will be dynamically populated -->
+        <p></p>   <!-- Will be dynamically populated -->
       </div>
+      <div class="card">
+        <h3></h3> <!-- Will be dynamically populated -->
+        <p></p>   <!-- Will be dynamically populated -->
+      </div>
+      <div class="card">
+        <h3></h3> <!-- Will be dynamically populated -->
+        <p></p>   <!-- Will be dynamically populated -->
+      </div>
+    </div>
   </section>
 
   <footer-component></footer-component>
@@ -75,6 +86,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
   <script type="module" src="firebase-config.js"></script>
   <script type="module" src="js/script.js"></script>
+  <script type="module" src="js/blog-preview.js"></script>
   <script src="components/header/header.js"></script>
   <script type="module" src="components/footer/footer-component.js"></script>
 </body>

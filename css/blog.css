@@ -183,7 +183,15 @@ h1, h2, h3, h4, h5 {
   padding: 1.8rem;
   background: transparent;
 }
-
+.blog-card-date {
+  
+  font-size: 0.8rem;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.3rem 0.6rem;
+  border-radius: 8px;
+  margin: 0.1rem;
+}
 .blog-card-header h3 {
   font-size: 1.8rem;
   margin: 0;
