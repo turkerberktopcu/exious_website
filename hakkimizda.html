@@ -27,22 +27,32 @@
   </section>
 
   <!-- HİKAYE BÖLÜMÜ -->
-  <section id="story-section" class="story-section active section">
-    <div id="story-container" class="story-container">
+ <!-- HİKAYE BÖLÜMÜ -->
+<section id="story-section" class="story-section active section">
+  <div id="story-container" class="story-container">
+    <!-- Sol Kolon: Hikaye Metni -->
+    <div class="story-text">
       <h2 id="story-heading"></h2>
       <p id="story-content"></p>
       <ul id="story-list"></ul>
     </div>
-  </section>
+    <!-- Sağ Kolon: Animasyonlu Resim -->
+    <div class="story-object">
+      <img 
+        id="animated-image" 
+        src="assets/images/story-bg.png" 
+        alt="EXIUS Sphere" 
+      />
+    </div>
+  </div>
+</section>
+
 
   <!-- EKİP BÖLÜMÜ -->
   <section id="team-section" class="team-section active section">
     <div id="team-container" class="team-container">
       <h2 id="team-heading"></h2>
-      <!--
-        team-members will be populated dynamically.
-        Each member is wrapped in <div class="team-row"> inside JS.
-      -->
+      <!-- Team üyeleri dinamik olarak yüklenecek -->
       <div id="team-members"></div>
     </div>
   </section>
@@ -100,8 +110,6 @@
           document.getElementById('team-heading').innerText = data.team.heading;
           const teamMembersDiv = document.getElementById('team-members');
           teamMembersDiv.innerHTML = '';
-          
-          // For each team member, create a div with .team-row
           data.team.members.forEach(member => {
             const memberEl = document.createElement('div');
             memberEl.classList.add('team-row');
@@ -133,7 +141,8 @@
   <script src="components/header/header.js"></script>
   <script type="module" src="components/footer/footer-component.js"></script>
   
-  <!-- Sayfaya Özel JS (Three.js Arka Plan) -->
+  <!-- Sayfaya Özel JS (Three.js Arka Plan ve Story 3D Obje) -->
   <script type="module" src="js/hakkimizda.js"></script>
+  
 </body>
 </html>
