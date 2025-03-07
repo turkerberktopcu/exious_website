@@ -93,6 +93,23 @@ h1, h2, h3, h4, h5 {
 
 }
 
+.section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+      170deg,
+      rgba(255,71,87,0.03) 0px,
+      rgba(255,71,87,0.03) 2px,
+      transparent 2px,
+      transparent 8px
+    );
+    pointer-events: none;
+  }
+
 
 
 .about-hero-container {
@@ -101,11 +118,11 @@ h1, h2, h3, h4, h5 {
     background: rgba(15, 15, 20, 0.5);
     border-radius: 24px;
     box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(16px);
     border: 1px solid rgba(255, 255, 255, 0.05);
     transform: translateY(0);
     transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
+
 
 .about-hero-container:hover {
     transform: translateY(-10px);
@@ -126,7 +143,7 @@ h1, h2, h3, h4, h5 {
 
 .hero-line {
     height: 4px;
-    width: 120px;
+    width: 80%;
     background: var(--gradient-primary);
     margin: 2rem auto;
     border-radius: 2px;
@@ -145,6 +162,17 @@ h1, h2, h3, h4, h5 {
     background: radial-gradient(circle at top left, rgba(25, 25, 30, 0.4) 0%, var(--background-darker) 80%);
     position: relative;
     overflow: hidden;
+}
+.story-section::after {
+    content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, #ff4757 0%, #ff6b81 100%);
+  box-shadow: 0 0 20px rgba(255,71,87,0.3);
+  z-index: 1; /* Ensure it stays above the pattern */
 }
 
 .story-container {
@@ -208,7 +236,6 @@ h1, h2, h3, h4, h5 {
     transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
     border: 1px solid rgba(255, 255, 255, 0.05);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-    backdrop-filter: blur(10px);
     position: relative;
     overflow: hidden;
 }
@@ -340,7 +367,6 @@ h1, h2, h3, h4, h5 {
     padding: 1rem 2rem;
     border: 1px solid rgba(255, 255, 255, 0.05);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-    backdrop-filter: blur(10px);
     transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
     width: fit-content;
     max-width: 300px;
@@ -413,7 +439,6 @@ h1, h2, h3, h4, h5 {
     background: var(--surface-color);
     border-radius: 20px;
     border: 1px solid rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -582,7 +607,7 @@ h1, h2, h3, h4, h5 {
          rgba(26, 26, 26, 0.3) 50%,   
          #0a0a0a 100%
       ),
-      url('/assets/images/hakkimizda.jpg');
+      url('/assets/images/iletisim.jpg');
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -603,7 +628,6 @@ h1, h2, h3, h4, h5 {
     margin: 0 1rem;
     margin-top: 400px;
     background: rgba(0, 0, 0, 0.45);
-    backdrop-filter: blur(16px);
     border-radius: 16px;
     box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
     border: 1px solid rgba(255, 255, 255, 0.05);

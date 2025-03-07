@@ -4,8 +4,6 @@ import {
   getDocs
 } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 
-// GSAP and Three.js are loaded via CDN in HTML
-
 const blogListContainer = document.querySelector('.blog-list-container');
 const modalOverlay = document.querySelector('.blog-modal-overlay');
 const modalBox = document.querySelector('.blog-modal');
@@ -23,53 +21,8 @@ function hideLoader() {
   if (loaderEl) loaderEl.style.display = 'none';
 }
 
-// Three.js Background Setup
-function initThreeJS() {
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-  const canvas = document.getElementById('bg-canvas');
-  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
-  renderer.setSize(window.innerWidth, window.innerHeight);
-
-  // Particle System - Reduced particle count for optimization
-  const particlesGeometry = new THREE.BufferGeometry();
-  const particleCount = 500; // reduced from 1000
-  const positions = new Float32Array(particleCount * 3);
-  for (let i = 0; i < particleCount * 3; i++) {
-    positions[i] = (Math.random() - 0.5) * 1000; // Spread particles in 3D space
-  }
-  particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-  const particlesMaterial = new THREE.PointsMaterial({ color: 0xff4757, size: 2, transparent: true, opacity: 0.5 });
-  const particles = new THREE.Points(particlesGeometry, particlesMaterial);
-  scene.add(particles);
-
-  camera.position.z = 200;
-
-  function animate() {
-    requestAnimationFrame(animate);
-    // Only animate if document is visible to reduce CPU load
-    if (!document.hidden) {
-      particles.rotation.y += 0.001;
-      renderer.render(scene, camera);
-    }
-  }
-  animate();
-
-  // Debounced Resize Handler
-  let resizeTimeout;
-  window.addEventListener('resize', () => {
-    clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(() => {
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-    }, 100);
-  });
-}
-
 // Fetch and Display Blogs
 window.addEventListener('DOMContentLoaded', async () => {
-  initThreeJS(); // Start 3D background
   showLoader();
   try {
     const snapshot = await getDocs(collection(db, 'blogs'));
@@ -82,7 +35,7 @@ window.addEventListener('DOMContentLoaded', async () => {
           <div class="empty-blog-deco"></div>
         </div>
       `;
-      gsap.from('.empty-blog-state', { opacity: 0, y: 50, duration: 1, ease: 'power3.out' });
+      // GSAP animasyonu kaldırıldı
     } else {
       let html = '';
       snapshot.forEach(docSnap => {
@@ -109,15 +62,8 @@ window.addEventListener('DOMContentLoaded', async () => {
       });
 
       blogListContainer.innerHTML = html;
-
-      // Animate Blog Cards with GSAP
-      gsap.from('.blog-card', {
-        opacity: 0,
-        y: 50,
-        stagger: 0.1,
-        duration: 0.8,
-        ease: 'power3.out'
-      });
+      
+      // GSAP animasyonu kaldırıldı
     }
   } catch (error) {
     console.error("Error fetching blogs:", error);
@@ -126,7 +72,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   }
 });
 
-// Event Delegation for Blog Card Click and Hover Animations
+// Event Delegation for Blog Card Click
 blogListContainer.addEventListener('click', (e) => {
   const card = e.target.closest('.blog-card');
   if (card) {
@@ -136,45 +82,20 @@ blogListContainer.addEventListener('click', (e) => {
   }
 });
 
-blogListContainer.addEventListener('mouseover', (e) => {
-  const card = e.target.closest('.blog-card');
-  if (card) {
-    gsap.to(card, { scale: 1.05, duration: 0.3, ease: 'power2.out' });
-  }
-});
+// Hover animasyonları kaldırıldı
 
-blogListContainer.addEventListener('mouseout', (e) => {
-  const card = e.target.closest('.blog-card');
-  if (card) {
-    gsap.to(card, { scale: 1, duration: 0.3, ease: 'power2.out' });
-  }
-});
-
-// Open Modal with GSAP Animation
+// Open Modal (animasyonlar kaldırıldı)
 function openBlogModal(title, content) {
   modalTitle.textContent = title;
   modalContent.innerHTML = content;
-
   modalOverlay.classList.add('active');
-  gsap.fromTo(modalBox, 
-    { scale: 0.9, opacity: 0, y: 20 },
-    { scale: 1, opacity: 1, y: 0, duration: 0.3, ease: 'power2.out' }
-  );
+  // GSAP animasyonu kaldırıldı
 }
 
-
-// Close Modal with GSAP Animation
+// Close Modal (animasyonlar kaldırıldı)
 function closeBlogModal() {
-  gsap.to(modalBox, {
-    scale: 0.8,
-    opacity: 0,
-    y: 50,
-    duration: 0.5,
-    ease: 'power3.in',
-    onComplete: () => {
-      modalOverlay.classList.remove('active');
-    }
-  });
+  modalOverlay.classList.remove('active');
+  // GSAP animasyonu kaldırıldı
 }
 
 modalCloseBtn.addEventListener('click', closeBlogModal);

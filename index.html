@@ -9,75 +9,95 @@
   <link rel="stylesheet" href="css/blog-preview.css">
   <link rel="stylesheet" href="components/header/header.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
 </head>
 <body>
-  
+  <!-- Mevcut header bileşeni -->
+  <header-component></header-component>
+
   <section class="hero">
-    <!-- Optionally uncomment the hero canvas if needed -->
+    <!-- İsteğe bağlı: hero canvas'ı aktif etmek için yorum satırını kaldırabilirsiniz -->
     <!-- <canvas id="hero-canvas"></canvas> -->
     <div class="hero-content">
-      <h1></h1> <!-- Will be dynamically populated -->
-      <p></p>   <!-- Will be dynamically populated -->
-      <button class="cta-button"></button> <!-- Will be dynamically populated -->
+      <h1></h1> <!-- Dinamik içerik yüklenecek -->
+      <p></p>   <!-- Dinamik içerik yüklenecek -->
+      <button class="cta-button"></button> <!-- Dinamik içerik yüklenecek -->
+    </div>
+    <!-- Aşağıya doğru kaydır göstergesi -->
+    <div class="scroll-indicator">
+      <i class="fas fa-chevron-down"></i>
     </div>
   </section>
 
-  <section class="stats">
-    <!-- Decorative Elements -->
-    <div class="stats-decor orb1"></div>
-    <div class="stats-decor orb2"></div>
-  
-    <div class="stats-intro">
-      <h2>İstatistikler</h2>
-      <p>Sunucu performansı ve topluluk büyüklüğü hakkında detaylı bilgiler</p>
+  <!-- Yeni Özellikler Bölümü -->
+ <!-- Yeni Özellikler Bölümü -->
+<section class="features">
+  <div class="features-content">
+    <h2 id="features-title">Özellikler</h2>
+    <p id="features-description">Sunucularımızın öne çıkan özellikleri ve teknolojik altyapısı</p>
+    <div class="features-grid" id="features-grid">
+      <!-- Dinamik özellik öğeleri buraya yüklenecek -->
     </div>
+  </div>
+</section>
+
   
-    <div class="stats-grid">
-      <div class="stat-item">
-        <div class="icon"><i class="fas fa-users"></i></div>
-        <div class="stat-number" data-target="1500">0</div>
-        <div class="stat-title">Oyuncu Sayısı</div>
+
+  <section class="futuristik-footer">
+    <section class="stats footer-section">
+      <!-- Dekoratif Elemanlar -->
+      <div class="stats-decor orb1"></div>
+      <div class="stats-decor orb2"></div>
+  
+      <div class="stats-intro">
+        <h2>İstatistikler</h2>
+        <p>Sunucu performansı ve topluluk büyüklüğü hakkında detaylı bilgiler</p>
       </div>
-      <div class="stat-item">
-        <div class="icon"><i class="fas fa-server"></i></div>
-        <div class="stat-number" data-target="99.9">0</div>
-        <div class="stat-title">Uptime (%)</div>
+  
+      <div class="stats-grid">
+        <div class="stat-item">
+          <div class="icon"><i class="fas fa-users"></i></div>
+          <div class="stat-number" data-target="1500">0</div>
+          <div class="stat-title">Oyuncu Sayısı</div>
+        </div>
+        <div class="stat-item">
+          <div class="icon"><i class="fas fa-server"></i></div>
+          <div class="stat-number" data-target="99.9">0</div>
+          <div class="stat-title">Uptime (%)</div>
+        </div>
+        <div class="stat-item">
+          <div class="icon"><i class="fas fa-tachometer-alt"></i></div>
+          <div class="stat-number" data-target="250">0</div>
+          <div class="stat-title">Sunucu Hızı</div>
+        </div>
       </div>
-      <div class="stat-item">
-        <div class="icon"><i class="fas fa-tachometer-alt"></i></div>
-        <div class="stat-number" data-target="250">0</div>
-        <div class="stat-title">Sunucu Hızı</div>
+    </section>
+  
+    <section class="faq-section active">
+      <div class="faq-header">
+        <h2>Sık Sorulan Sorular</h2>
+        <p>En sık sorulan sorular ve cevaplarımız</p>
       </div>
-    </div>
+      <div class="faq-container">
+        <!-- Dinamik FAQ öğeleri buraya yüklenecek -->
+      </div>
+    </section>
   </section>
   
-  
-  
-  <section class="faq-section active">
-    <div class="faq-header">
-      <h2>Sık Sorulan Sorular</h2>
-      <p>En sık sorulan sorular ve cevaplarımız</p>
-    </div>
-    <div class="faq-container">
-      <!-- Dynamic FAQ items will be inserted here -->
-    </div>
-  </section>
-  
+  <div class="footer-line"></div>
 
   <section class="cards-section">
     <div class="cards-container">
       <div class="card">
-        <h3></h3> <!-- Will be dynamically populated -->
-        <p></p>   <!-- Will be dynamically populated -->
+        <h3></h3> <!-- Dinamik içerik yüklenecek -->
+        <p></p>   <!-- Dinamik içerik yüklenecek -->
       </div>
       <div class="card">
-        <h3></h3> <!-- Will be dynamically populated -->
-        <p></p>   <!-- Will be dynamically populated -->
+        <h3></h3> <!-- Dinamik içerik yüklenecek -->
+        <p></p>   <!-- Dinamik içerik yüklenecek -->
       </div>
       <div class="card">
-        <h3></h3> <!-- Will be dynamically populated -->
-        <p></p>   <!-- Will be dynamically populated -->
+        <h3></h3> <!-- Dinamik içerik yüklenecek -->
+        <p></p>   <!-- Dinamik içerik yüklenecek -->
       </div>
     </div>
   </section>
@@ -96,105 +116,134 @@
   <script src="components/header/header.js"></script>
   <script type="module" src="components/footer/footer-component.js"></script>
   <script>
- document.addEventListener('DOMContentLoaded', function() {
-  const counters = document.querySelectorAll('.stat-number');
-  const speed = 200; // Adjust speed: lower means faster
+    document.addEventListener('DOMContentLoaded', function() {
+      const counters = document.querySelectorAll('.stat-number');
+      const speed = 200; // Hız ayarı: Düşük değer daha hızlı animasyon sağlar
 
-  const animateCount = (counter) => {
-    const target = parseFloat(counter.getAttribute('data-target'));
-    const current = parseFloat(counter.innerText);
-    const increment = target / speed;
+      const animateCount = (counter) => {
+        const target = parseFloat(counter.getAttribute('data-target'));
+        const current = parseFloat(counter.innerText);
+        const increment = target / speed;
 
-    if (current < target) {
-      counter.innerText = (current + increment).toFixed(1);
-      setTimeout(() => animateCount(counter), 20);
-    } else {
-      counter.innerText = target;
-    }
-  };
+        if (current < target) {
+          counter.innerText = (current + increment).toFixed(1);
+          setTimeout(() => animateCount(counter), 20);
+        } else {
+          counter.innerText = target;
+        }
+      };
 
-  // Start animation when the stats section is in view
-  const options = { threshold: 0.5 };
-  const observer = new IntersectionObserver((entries, observer) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        counters.forEach(counter => {
-          animateCount(counter);
+      // İstatistikler görünür hale geldiğinde animasyonu başlat
+      const options = { threshold: 0.5 };
+      const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            counters.forEach(counter => {
+              animateCount(counter);
+            });
+            observer.disconnect();
+          }
         });
-        observer.disconnect();
-      }
+      }, options);
+
+      observer.observe(document.querySelector('.stats'));
     });
-  }, options);
-
-  observer.observe(document.querySelector('.stats'));
-});
-
-
   </script>
   <script type="module">
-    // Make sure to import your Firestore configuration and methods
-import { db } from './firebase-config.js';
-import { doc, getDoc } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
-
-async function loadFAQData() {
-  try {
-    // Reference the FAQ document in the "site_content" collection
-    const faqDocRef = doc(db, 'site_content', 'faq');
-    const faqSnap = await getDoc(faqDocRef);
-    
-    if (faqSnap.exists()) {
-      const faqData = faqSnap.data();
-      renderFAQ(faqData);
-    } else {
-      console.error("FAQ document does not exist.");
-      document.querySelector('.faq-container').innerHTML = "<p>No FAQ data available.</p>";
+    import { db } from './firebase-config.js';
+    import { doc, getDoc } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+  
+    async function loadFeaturesData() {
+      try {
+        const featuresDocRef = doc(db, 'site_content', 'features');
+        const docSnap = await getDoc(featuresDocRef);
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          document.getElementById('features-title').innerHTML = data.title;
+          document.getElementById('features-description').innerHTML = data.description;
+          const featuresGrid = document.getElementById('features-grid');
+          featuresGrid.innerHTML = "";
+          if (data.items && data.items.length > 0) {
+            data.items.forEach((item) => {
+              const featureItem = document.createElement("div");
+              featureItem.classList.add("feature-item");
+              featureItem.innerHTML = `
+                <i class="${item.icon}"></i>
+                <h3>${item.title}</h3>
+                <p>${item.description}</p>
+              `;
+              featuresGrid.appendChild(featureItem);
+            });
+          } else {
+            featuresGrid.innerHTML = "<p>Özellik verisi bulunamadı.</p>";
+          }
+        } else {
+          console.error("Features document does not exist.");
+          document.getElementById('features-grid').innerHTML = "<p>Özellik verisi mevcut değil.</p>";
+        }
+      } catch (error) {
+        console.error("Error loading features data:", error);
+        document.getElementById('features-grid').innerHTML = "<p>Özellikler yüklenirken hata oluştu.</p>";
+      }
     }
-  } catch (error) {
-    console.error("Error loading FAQ data:", error);
-    document.querySelector('.faq-container').innerHTML = "<p>Hata: FAQ verileri yüklenemedi.</p>";
-  }
-}
+  
+    document.addEventListener("DOMContentLoaded", loadFeaturesData);
+  </script>
+  
+  <script type="module">
+    import { db } from './firebase-config.js';
+    import { doc, getDoc } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 
-function renderFAQ(data) {
-  const faqContainer = document.querySelector('.faq-container');
-  faqContainer.innerHTML = ""; // Clear any existing FAQ items
+    async function loadFAQData() {
+      try {
+        const faqDocRef = doc(db, 'site_content', 'faq');
+        const faqSnap = await getDoc(faqDocRef);
+        
+        if (faqSnap.exists()) {
+          const faqData = faqSnap.data();
+          renderFAQ(faqData);
+        } else {
+          console.error("FAQ belgesi bulunamadı.");
+          document.querySelector('.faq-container').innerHTML = "<p>FAQ verisi mevcut değil.</p>";
+        }
+      } catch (error) {
+        console.error("FAQ verileri yüklenirken hata oluştu:", error);
+        document.querySelector('.faq-container').innerHTML = "<p>Hata: FAQ verileri yüklenemedi.</p>";
+      }
+    }
 
-  if (data && data.items && data.items.length > 0) {
-    data.items.forEach((item, index) => {
-      // Create FAQ item container
-      const faqItem = document.createElement("div");
-      faqItem.classList.add("faq-item");
+    function renderFAQ(data) {
+      const faqContainer = document.querySelector('.faq-container');
+      faqContainer.innerHTML = "";
 
-      // Build the question part
-      const faqQuestion = document.createElement("div");
-      faqQuestion.classList.add("faq-question");
-      faqQuestion.innerHTML = `<span>${item.question}</span> <i class="fas fa-chevron-down"></i>`;
+      if (data && data.items && data.items.length > 0) {
+        data.items.forEach((item, index) => {
+          const faqItem = document.createElement("div");
+          faqItem.classList.add("faq-item");
 
-      // Build the answer part
-      const faqAnswer = document.createElement("div");
-      faqAnswer.classList.add("faq-answer");
-      faqAnswer.innerHTML = `<p>${item.answer}</p>`;
+          const faqQuestion = document.createElement("div");
+          faqQuestion.classList.add("faq-question");
+          faqQuestion.innerHTML = `<span>${item.question}</span> <i class="fas fa-chevron-down"></i>`;
 
-      // Append question and answer to the item container
-      faqItem.appendChild(faqQuestion);
-      faqItem.appendChild(faqAnswer);
+          const faqAnswer = document.createElement("div");
+          faqAnswer.classList.add("faq-answer");
+          faqAnswer.innerHTML = `<p>${item.answer}</p>`;
 
-      // Add click event to toggle the "active" class for accordion behavior
-      faqQuestion.addEventListener("click", function() {
-        faqItem.classList.toggle("active");
-      });
+          faqItem.appendChild(faqQuestion);
+          faqItem.appendChild(faqAnswer);
 
-      // Append the FAQ item to the container
-      faqContainer.appendChild(faqItem);
-    });
-  } else {
-    faqContainer.innerHTML = "<p>FAQ items not found.</p>";
-  }
-}
+          faqQuestion.addEventListener("click", function() {
+            faqItem.classList.toggle("active");
+          });
 
-// Load FAQ data when the DOM is ready
-document.addEventListener("DOMContentLoaded", loadFAQData);
+          faqContainer.appendChild(faqItem);
+        });
+      } else {
+        faqContainer.innerHTML = "<p>FAQ öğeleri bulunamadı.</p>";
+      }
+    }
 
+    document.addEventListener("DOMContentLoaded", loadFAQData);
   </script>
 </body>
 </html>

@@ -91,10 +91,150 @@ function setupAdminNav() {
         loadMessages();
       } else if (panel === 'hakkimizda') {
         loadHakkimizdaEditor();
-      }
+      }else if (panel === 'features') {
+        loadFeaturesEditor();
+      }      
     });
   });
 }
+// Admin panelde Features içeriğini yükleyen fonksiyon:
+async function loadFeaturesEditor() {
+  try {
+    showLoader();
+    // Eğer belge mevcut değilse default veriyi oluşturabilirsiniz:
+    let featuresData = await getContentSection('features');
+    if (!featuresData) {
+      await setDoc(doc(db, 'site_content', 'features'), {
+        title: "Özellikler",
+        description: "Sunucularımızın öne çıkan özellikleri ve teknolojik altyapısı",
+        items: [
+          { icon: "fas fa-rocket", title: "Hızlı Kurulum", description: "Anında ve güvenli sunucu kurulumu." },
+          { icon: "fas fa-shield-alt", title: "Güvenlik", description: "Üst düzey güvenlik önlemleriyle koruma." },
+          { icon: "fas fa-sync-alt", title: "Dinamik Güncellemeler", description: "Sürekli yenilenen ve gelişen sistemimiz." }
+        ]
+      });
+      featuresData = await getContentSection('features');
+    }
+    const featuresEditorHTML = createFeaturesEditor(featuresData);
+    document.getElementById('site-content-editor').innerHTML = `
+      <div class="editor-container">
+        <div class="editor-header">
+          <h2>Özellikler Yönetimi</h2>
+          <button onclick="logoutAdmin()" class="logout-btn">Çıkış Yap</button>
+        </div>
+        ${featuresEditorHTML}
+      </div>
+    `;
+    document.getElementById('site-content-editor').style.display = 'block';
+    document.getElementById('faq-editor').style.display = 'none';
+    document.getElementById('messages-editor').style.display = 'none';
+    document.getElementById('blogs-editor').style.display = 'none';
+  } catch (error) {
+    console.error("Error loading features editor:", error);
+    alert("Özellikler yüklenirken hata: " + error.message);
+  } finally {
+    hideLoader();
+  }
+}
+
+// Oluşturulan özellikler editörü HTML'ini döndüren fonksiyon:
+function createFeaturesEditor(data) {
+  if (!data) return '';
+  let itemsHTML = '';
+  if (data.items && data.items.length > 0) {
+    data.items.forEach((item, i) => {
+      itemsHTML += `
+        <div class="feature-item-editor">
+          <h4>Özellik ${i + 1}</h4>
+          <div class="form-group">
+            <label for="feature-icon-${i}">İkon Sınıfı:</label>
+            <input type="text" id="feature-icon-${i}" value="${item.icon}">
+          </div>
+          <div class="form-group">
+            <label for="feature-title-${i}">Başlık:</label>
+            <input type="text" id="feature-title-${i}" value="${item.title}">
+          </div>
+          <div class="form-group">
+            <label for="feature-desc-${i}">Açıklama:</label>
+            <textarea id="feature-desc-${i}">${item.description}</textarea>
+          </div>
+          <button type="button" class="update-btn" onclick="removeFeatureItem(${i})">Bu Özelliği Sil</button>
+        </div>
+      `;
+    });
+  }
+  return `
+    <div class="editor-section">
+      <div class="form-group">
+        <label for="features-title">Başlık:</label>
+        <input type="text" id="features-title" value="${data.title}">
+      </div>
+      <div class="form-group">
+        <label for="features-desc">Açıklama:</label>
+        <textarea id="features-desc" rows="2">${data.description}</textarea>
+      </div>
+      ${itemsHTML}
+      <button onclick="updateFeatures()" class="update-btn">Güncelle</button>
+      <button onclick="addNewFeatureItem()" class="update-btn">Yeni Özellik Ekle</button>
+    </div>
+  `;
+}
+
+// Özellikler bölümünü Firestore’a güncelleyen fonksiyon:
+window.updateFeatures = async function() {
+  try {
+    const title = document.getElementById('features-title').value;
+    const description = document.getElementById('features-desc').value;
+    let items = [];
+    const featureEditors = document.querySelectorAll('.feature-item-editor');
+    featureEditors.forEach((editor, i) => {
+      const icon = document.getElementById(`feature-icon-${i}`).value;
+      const featureTitle = document.getElementById(`feature-title-${i}`).value;
+      const featureDesc = document.getElementById(`feature-desc-${i}`).value;
+      items.push({ icon, title: featureTitle, description: featureDesc });
+    });
+    await updateDoc(doc(db, 'site_content', 'features'), { title, description, items });
+    alert('Özellikler güncellendi!');
+  } catch (error) {
+    console.error("Güncelleme hatası (Features):", error);
+    alert("Özellikler güncelleme hatası: " + error.message);
+  }
+};
+
+// Yeni özellik ekleme fonksiyonu:
+window.addNewFeatureItem = async function() {
+  try {
+    let featuresData = await getContentSection('features');
+    if (!featuresData) return;
+    if (!featuresData.items) featuresData.items = [];
+    featuresData.items.push({
+      icon: "fas fa-star",
+      title: "Yeni Özellik",
+      description: "Açıklama"
+    });
+    await updateDoc(doc(db, 'site_content', 'features'), { items: featuresData.items });
+    alert("Yeni özellik eklendi!");
+    loadFeaturesEditor(); // Editörü yeniden yükle
+  } catch (error) {
+    console.error("Yeni özellik ekleme hatası:", error);
+    alert("Yeni özellik eklenirken hata: " + error.message);
+  }
+};
+
+// Özellik silme fonksiyonu:
+window.removeFeatureItem = async function(index) {
+  try {
+    let featuresData = await getContentSection('features');
+    if (!featuresData || !featuresData.items) return;
+    featuresData.items.splice(index, 1);
+    await updateDoc(doc(db, 'site_content', 'features'), { items: featuresData.items });
+    alert("Özellik silindi!");
+    loadFeaturesEditor(); // Editörü yeniden yükle
+  } catch (error) {
+    console.error("Özellik silme hatası:", error);
+    alert("Özellik silinirken hata: " + error.message);
+  }
+};
 
 async function loadHakkimizdaEditor() {
   try {

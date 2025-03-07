@@ -49,8 +49,8 @@ section.active {
 }
 
 /* ================================
- HERO SECTION (Updated Design)
- ================================ */
+   HERO SECTION (Güncel Tasarım)
+================================ */
 .hero {
   background: linear-gradient(45deg, rgba(10,10,10,0.85) 0%, rgba(26,26,26,0.75) 100%),
               url('../assets/images/futuristic-bg.jpg') center/cover;
@@ -124,7 +124,6 @@ section.active {
   cursor: pointer;
   overflow: hidden;
   transition: all 0.4s ease;
-  backdrop-filter: blur(5px);
 }
 
 .cta-button::before {
@@ -148,29 +147,16 @@ section.active {
   left: 100%;
 }
 
-
-/* Stats Section Container */
+/* ================================
+   STATS SECTION
+================================ */
 .stats {
-  background: radial-gradient(circle at bottom right, rgba(255,71,87,0.05) 0%, rgba(10,10,10,0.8) 80%);
   padding: 6rem 2rem;
   position: relative;
   overflow: hidden;
   color: #fff;
 }
 
-.stats::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 300px;
-  height: 300px;
-  background: radial-gradient(circle, rgba(255,71,87,0.15) 0%, transparent 70%);
-  filter: blur(50px);
-  z-index: 1;
-}
-
-/* Intro Text */
 .stats-intro {
   text-align: center;
   margin-bottom: 4rem;
@@ -195,7 +181,6 @@ section.active {
   line-height: 1.6;
 }
 
-/* Grid Layout for Stats Cards */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -205,10 +190,8 @@ section.active {
   padding: 0 2rem;
 }
 
-/* Stats Card Style */
 .stat-item {
   background: linear-gradient(135deg, rgba(35,35,35,0.7), rgba(45,45,45,0.9));
-  border: 2px solid rgba(255,71,87,0.4);
   border-radius: 20px;
   padding: 3rem 2rem;
   text-align: center;
@@ -216,7 +199,6 @@ section.active {
   box-shadow: 0 10px 20px rgba(0,0,0,0.3);
   position: relative;
   z-index: 2;
-  backdrop-filter: blur(5px);
 }
 
 .stat-item:hover {
@@ -238,14 +220,12 @@ section.active {
   z-index: -1;
 }
 
-/* Icon Style */
 .stat-item .icon {
   font-size: 3rem;
   margin-bottom: 1rem;
   color: #ff4757;
 }
 
-/* Stat Number with Gradient Text */
 .stat-number {
   font-size: 4.5rem;
   font-weight: 800;
@@ -255,7 +235,6 @@ section.active {
   -webkit-text-fill-color: transparent;
 }
 
-/* Stat Title */
 .stat-title {
   font-size: 1.5rem;
   letter-spacing: 1px;
@@ -264,8 +243,8 @@ section.active {
 }
 
 /* ================================
- CARDS SECTION
- ================================ */
+   CARDS SECTION
+================================ */
 .cards-section {
   background: radial-gradient(circle at center, rgba(255,71,87,0.08) 0%, rgba(10,10,10,0.8) 70%);
   padding: 4rem 2rem;
@@ -320,7 +299,6 @@ section.active {
   transition: all 0.5s cubic-bezier(0.23,1,0.32,1);
   transform: translateZ(0) rotateY(0) translateX(0);
   box-shadow: 0 15px 35px rgba(0,0,0,0.3);
-  backdrop-filter: blur(5px);
 }
 
 .card:nth-child(1) {
@@ -406,7 +384,9 @@ section.active {
   pointer-events: none;
 }
 
-/* Bridge Section */
+/* ================================
+   BRIDGE SECTION
+================================ */
 .bridge-section {
   position: relative;
   background: linear-gradient(45deg, rgba(30,30,30,0.8), rgba(40,40,40,0.9));
@@ -529,9 +509,10 @@ section.active {
   100% { transform: translateY(-20px) translateX(20px); }
 }
 
-/* FAQ Section Container */
+/* ================================
+   FAQ SECTION
+================================ */
 .faq-section {
-  background: radial-gradient(circle at top left, rgba(255,71,87,0.08) 0%, rgba(10,10,10,0.8) 70%);
   padding: 4rem 2rem;
   color: #fff;
   width: 100%;
@@ -539,20 +520,6 @@ section.active {
   overflow: hidden;
 }
 
-.faq-section::before {
-  content: '';
-  position: absolute;
-  top: -100px;
-  left: -100px;
-  width: 300px;
-  height: 300px;
-  background: rgba(255,71,87,0.1);
-  border-radius: 50%;
-  filter: blur(80px);
-  z-index: 0;
-}
-
-/* FAQ Header */
 .faq-header {
   text-align: center;
   margin-bottom: 2rem;
@@ -573,7 +540,6 @@ section.active {
   color: #f5f5f5;
 }
 
-/* FAQ Container */
 .faq-container {
   max-width: 800px;
   margin: 0 auto;
@@ -581,7 +547,6 @@ section.active {
   z-index: 2;
 }
 
-/* FAQ Item Styles */
 .faq-item {
   background: linear-gradient(145deg, rgba(35,35,35,0.8), rgba(45,45,45,0.9));
   border: 1px solid rgba(255,71,87,0.4);
@@ -589,7 +554,6 @@ section.active {
   margin-bottom: 1rem;
   overflow: hidden;
   transition: box-shadow 0.3s ease, transform 0.3s ease;
-  backdrop-filter: blur(5px);
 }
 
 .faq-item:hover {
@@ -597,7 +561,6 @@ section.active {
   transform: translateY(-3px);
 }
 
-/* FAQ Question */
 .faq-question {
   display: flex;
   justify-content: space-between;
@@ -612,7 +575,6 @@ section.active {
   color: #ff4757;
 }
 
-/* FAQ Answer (Collapsible) */
 .faq-answer {
   max-height: 0;
   overflow: hidden;
@@ -626,16 +588,17 @@ section.active {
   color: #f5f5f5;
 }
 
-/* Active State */
 .faq-item.active .faq-answer {
-  max-height: 500px; /* Adjust this value if needed */
+  max-height: 500px;
 }
 
 .faq-item.active .faq-question i {
   transform: rotate(180deg);
 }
 
-/* Loader Overlay */
+/* ================================
+   LOADER OVERLAY
+================================ */
 .loader-overlay {
   position: fixed;
   top: 0;
@@ -663,7 +626,73 @@ section.active {
   100% { transform: rotate(360deg); }
 }
 
-/* Responsive Design */
+/* ================================
+   FUTURISTIK FOOTER
+================================ */
+.futuristik-footer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+      170deg,
+      rgba(255,71,87,0.03) 0px,
+      rgba(255,71,87,0.03) 2px,
+      transparent 2px,
+      transparent 8px
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.futuristik-footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: radial-gradient(circle at top left, rgba(255,71,87,0.08) 0%, rgba(10,10,10,0.8) 70%);
+  box-shadow: 0 0 20px rgba(255,71,87,0.3);
+  z-index: 1;
+}
+
+.futuristik-footer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, #ff4757 0%, #ff6b81 100%);
+  box-shadow: 0 0 20px rgba(255,71,87,0.3);
+  z-index: 1;
+}
+
+.footer-line {
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, #ff4757 0%, #ff6b81 100%);
+  margin-top: 3rem;
+  position: relative;
+  box-shadow: 0 0 20px rgba(255,71,87,0.3);
+}
+
+.footer-line::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+}
+
+/* ================================
+   RESPONSIVE TASARIM
+================================ */
 @media (max-width: 768px) {
   h1 {
     font-size: 3rem;
@@ -718,5 +747,161 @@ section.active {
   
   .faq-answer p {
     font-size: 1rem;
+  }
+}
+/* Modern ve Etkileşimli Features Bölümü (Uyumlu Arka Plan) */
+.features {
+  background: linear-gradient(135deg, #0a0a0a, #1a1a1a); /* Global body arka planıyla uyumlu renkler */
+  padding: 4rem 2rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.features::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* Body::before ile benzer hafif, tekrarlayan çizgi deseni */
+  background: repeating-linear-gradient(
+      10deg,
+      rgba(255,71,87,0.03) 0px,
+      rgba(255,71,87,0.03) 2px,
+      transparent 2px,
+      transparent 4px
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.features-content {
+  position: relative;
+  z-index: 2;
+  max-width: 1200px;
+  margin: 0 auto;
+  animation: fadeInUp 1s ease-out;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.features h2 {
+  font-size: 3rem;
+  background: linear-gradient(45deg, #ff4757, #ff6b81);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 1rem;
+  animation: popIn 0.8s ease-out;
+}
+
+@keyframes popIn {
+  0% { transform: scale(0.8); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.features p {
+  font-size: 1.3rem;
+  margin-bottom: 3rem;
+  color: #ccc;
+  animation: fadeIn 1s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.feature-item {
+  background: rgba(20, 20, 20, 0.85);
+  padding: 2rem;
+  border-radius: 15px;
+  border: 1px solid rgba(255,71,87,0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.feature-item::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,71,87,0.2), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  transform: rotate(45deg);
+}
+
+.feature-item:hover::before {
+  opacity: 1;
+}
+
+.feature-item:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 15px 30px rgba(255,71,87,0.2);
+  border-color: rgba(255,71,87,0.6);
+}
+
+.feature-item i {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: #ff4757;
+  transition: transform 0.3s ease;
+}
+
+.feature-item:hover i {
+  transform: rotate(20deg) scale(1.1);
+}
+
+.feature-item h3 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(45deg, #ff4757, #ff6b81);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.feature-item p {
+  font-size: 1.1rem;
+  color: #ddd;
+  line-height: 1.5;
+}
+
+/* Scroll Indicator */
+.scroll-indicator {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  cursor: pointer;
+  animation: bounce 2s infinite;
+}
+.scroll-indicator i {
+  font-size: 2rem;
+  color: #ff4757;
+}
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateX(-50%) translateY(0);
+  }
+  40% {
+    transform: translateX(-50%) translateY(-10px);
+  }
+  60% {
+    transform: translateX(-50%) translateY(-5px);
   }
 }

@@ -8,7 +8,6 @@ nav {
     align-items: center;
     background: rgba(0, 0, 0, 0);
     z-index: 1000;
-    backdrop-filter: blur(4px);
 }
 
 .logo {
