@@ -90,15 +90,10 @@ h1, h2, h3, h4, h5 {
     align-items: center;
     justify-content: center;
     min-height: 70vh;
+
 }
 
-/* Hero Section */
-.about-hero {
-    background: radial-gradient(circle at bottom right, rgba(25, 25, 30, 0.4) 0%, var(--background-darker) 80%);
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-}
+
 
 .about-hero-container {
     max-width: 900px;
@@ -333,7 +328,7 @@ h1, h2, h3, h4, h5 {
   }
   #team-members {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     gap: 1.5rem;
   }
   
@@ -575,3 +570,96 @@ h1, h2, h3, h4, h5 {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+/* Example swirl background + radial gradient overlay */
+.new-hero {
+    position: relative;
+    overflow: hidden;
+    height: 100vh;
+    background:
+      radial-gradient(
+         circle at bottom right,
+         rgba(10, 10, 10, 0.4) 0%,    
+         rgba(26, 26, 26, 0.3) 50%,   
+         #0a0a0a 100%
+      ),
+      url('/assets/images/hakkimizda.jpg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    /* Remove or comment out background-attachment if using JS for parallax */
+    /* background-attachment: fixed; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  
+
+  /* The semi-transparent "card" overlay for text */
+  .about-hero-content {
+    max-width: 1200px;
+    width: 80%;
+    padding: 3rem 2rem;
+    margin: 0 1rem;
+    margin-top: 400px;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(16px);
+    border-radius: 16px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  
+  /* Hover lift, if desired */
+  .about-hero-content:hover {
+    transform: translateY(-5px);
+  }
+  
+  /* CONTACT label */
+  .about-hero-label {
+    display: inline-block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #fff;
+    opacity: 0.8;
+    margin-bottom: 0.75rem;
+  }
+  
+  /* Big heading */
+  .about-hero-title {
+    font-size: 3rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    color: #ffffff;
+    /* or do a gradient text: 
+       background: var(--gradient-primary);
+       -webkit-background-clip: text;
+       -webkit-text-fill-color: transparent; 
+    */
+  }
+  
+  /* Subtitle / supporting text */
+  .about-hero-subtitle {
+    font-size: 1.25rem;
+    color: #f0f0f0;
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.6;
+    font-weight: 300;
+  }
+  
+  /* Responsive tweak for smaller screens */
+  @media (max-width: 768px) {
+    .about-hero-title {
+      font-size: 2rem;
+    }
+    .about-hero-subtitle {
+      font-size: 1rem;
+    }
+  }
+  .new-hero:hover .about-hero-content {
+    transform: translateY(-5px);
+  }

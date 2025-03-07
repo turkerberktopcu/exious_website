@@ -16,21 +16,34 @@ import {
   serverTimestamp,
   addDoc
 } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+// Firestore'dan onSnapshot fonksiyonu için import ekleyin:
+import { onSnapshot } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 
-// Listen for auth state changes
+// Kullanıcı oturum açtığında mesaj sayısını dinle:
 onAuthStateChanged(auth, user => {
   if (user) {
-    // User is logged in
+    // Oturum açıldıktan sonra diğer işlemler...
     document.getElementById('login-section').style.display = 'none';
     document.getElementById('content-editor').style.display = 'block';
     loadSiteContentEditors(); // Default tab
     setupAdminNav();
+    
+    // Mesaj sayısını gerçek zamanlı güncellemek için:
+    initMessageCountListener();
   } else {
-    // User is not logged in
     document.getElementById('login-section').style.display = 'block';
     document.getElementById('content-editor').style.display = 'none';
   }
 });
+
+// Mesaj sayısını gerçek zamanlı güncelleyen fonksiyon:
+function initMessageCountListener() {
+  const messagesCollection = collection(db, 'contact_messages');
+  onSnapshot(messagesCollection, (snapshot) => {
+    document.getElementById('messagesCount').textContent = snapshot.size;
+  });
+}
+
 
 // Admin login
 window.adminLogin = async function() {
@@ -298,61 +311,58 @@ async function loadBlogs() {
   }
   
 
-async function loadMessages() {
+  async function loadMessages() {
     try {
         showLoader();
-      // 1) Fetch all docs from 'contact_messages'
-      const snapshot = await getDocs(collection(db, 'contact_messages'));
-  
-      // 2) Build the HTML
-      let messagesHTML = `
-        <div class="editor-container">
-          <div class="editor-header">
-            <h2>Gelen Mesajlar</h2>
-            <button onclick="logoutAdmin()" class="logout-btn">Çıkış Yap</button>
-          </div>
-          <div class="messages-list">
-      `;
-  
-      snapshot.forEach(docSnap => {
-        // docSnap.data() => { name, email, message, createdAt, ... }
-        const docId = docSnap.id; // unique ID of this document
-        const data = docSnap.data();
-        const name = data.name || "Belirtilmedi";
-        const email = data.email || "Belirtilmedi";
-        const message = data.message || "Mesaj yok";
-  
+        // Firestore'dan mesajları çek
+        const snapshot = await getDocs(collection(db, 'contact_messages'));
+
+        // Mesaj sayısını güncelle
+        document.getElementById('messagesCount').textContent = snapshot.size;
+
+        // Mesajların listelenmesi
+        let messagesHTML = `
+          <div class="editor-container">
+            <div class="editor-header">
+              <h2>Gelen Mesajlar</h2>
+              <button onclick="logoutAdmin()" class="logout-btn">Çıkış Yap</button>
+            </div>
+            <div class="messages-list">
+        `;
+        snapshot.forEach(docSnap => {
+            const docId = docSnap.id;
+            const data = docSnap.data();
+            const name = data.name || "Belirtilmedi";
+            const email = data.email || "Belirtilmedi";
+            const message = data.message || "Mesaj yok";
+    
+            messagesHTML += `
+              <div class="message-card">
+                <h4>${name}</h4>
+                <p>Email: ${email}</p>
+                <p>Mesaj: ${message}</p>
+                <button class="delete-msg-btn" onclick="deleteMessage('${docId}')">Sil</button>
+              </div>
+            `;
+        });
+    
         messagesHTML += `
-          <div class="message-card">
-            <h4>${name}</h4>
-            <p>Email: ${email}</p>
-            <p>Mesaj: ${message}</p>
-            <!-- 'Sil' button calls deleteMessage(docId) -->
-            <button class="delete-msg-btn" onclick="deleteMessage('${docId}')">Sil</button>
+            </div>
           </div>
         `;
-      });
-  
-      messagesHTML += `
-          </div> <!-- end .messages-list -->
-        </div> <!-- end .editor-container -->
-      `;
-  
-      // 3) Insert into #messages-editor
-      document.getElementById('messages-editor').innerHTML = messagesHTML;
-  
-      // 4) Show the messages panel, hide others
-      document.getElementById('site-content-editor').style.display = 'none';
-      document.getElementById('faq-editor').style.display = 'none';
-      document.getElementById('messages-editor').style.display = 'block';
-  
+    
+        document.getElementById('messages-editor').innerHTML = messagesHTML;
+        document.getElementById('site-content-editor').style.display = 'none';
+        document.getElementById('faq-editor').style.display = 'none';
+        document.getElementById('messages-editor').style.display = 'block';
     } catch (error) {
-      console.error("Error loading messages:", error);
-      alert("Mesajlar yüklenirken hata oluştu: " + error.message);
+        console.error("Error loading messages:", error);
+        alert("Mesajlar yüklenirken hata oluştu: " + error.message);
     } finally {
         hideLoader();
     }
-  }
+}
+
   
 
 // ---------- FAQ EDITOR ----------

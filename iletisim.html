@@ -19,15 +19,14 @@
 
   <!-- Hero Section with 3D Canvas -->
   <section class="contact-hero active">
-    <!-- Decorative Floating Orbs -->
-    <div class="contact-decor orb orb1"></div>
-    <div class="contact-decor orb orb2"></div>
-
     <div class="contact-hero-content">
-      <h1 class="glitch-text">Bizimle İletişime Geçin</h1>
-      <p>Her türlü soru, öneri veya iş birliği için bize ulaşabilirsiniz.</p>
+      <h1 class="contact-hero-title">Bizimle İletişime Geçin</h1>
+      <p class="contact-hero-subtitle">
+        Her türlü soru, öneri veya iş birliği için bize ulaşabilirsiniz.
+      </p>
     </div>
   </section>
+  
 
   <!-- Contact Section with Split Layout -->
   <section class="contact-section">
@@ -82,5 +81,16 @@
   <script src="components/header/header.js"></script>
   <script type="module" src="components/footer/footer-component.js"></script>
   <script type="module" src="js/iletisim.js"></script>
+  <script>
+    window.addEventListener('scroll', function() {
+      const scrollPosition = window.pageYOffset;
+      const contactHero = document.querySelector('.contact-hero');
+      // Adjust the multiplier (0.5) to control the parallax speed.
+      const offset = scrollPosition * 0.5;
+      // This keeps the image centered (50%) and adds the pixel offset.
+      contactHero.style.backgroundPosition = `center calc(50% + ${offset}px)`;
+    });
+  </script>
+  
 </body>
 </html>

@@ -50,17 +50,24 @@
     transition: 0.3s;
   }
   
+  .footer-section a {
+    position: relative; /* Needed for absolute positioning of ::after */
+    text-decoration: none; /* Optional: Removes default underline */
+    color: inherit; /* Keeps the default text color */
+    padding-bottom: 4px; /* Ensures spacing for the underline */
+  }
+  
   .footer-section a::after {
     content: '';
     position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 0;
-    height: 1px;
+    bottom: 0; /* Aligns with the bottom border */
+    left: 50%; /* Starts from the center */
+    width: 0; /* Initially hidden */
+    height: 2px; /* Border thickness */
     background: #ff4757;
-    transition: 0.3s;
+    transition: all 0.3s ease-in-out;
+    transform: translateX(-50%); /* Keeps it centered */
   }
-  
   .footer-section a:hover::after {
     width: 100%;
   }
@@ -73,14 +80,15 @@
   
   .social-icon {
     padding: 0.5rem 1rem;
-    border: 1px solid rgba(255,71,87,0.3);
+    border: 3px solid rgba(255,71,87,0.3);
     border-radius: 4px;
+    border-radius: 16px;
     transition: 0.3s;
   }
   
   .social-icon:hover {
     background: rgba(255,71,87,0.1);
-    transform: translateY(-2px);
+    transform: translateY(-6px);
   }
   
   .footer-bottom {

@@ -129,16 +129,17 @@ section.active {
   left: 100%;
 }
 
-/* ================================
- STATS SECTION
- ================================ */
+
+/* Stats Section Container */
 .stats {
   background: radial-gradient(circle at bottom right, rgba(25,25,30,0.4) 0%, #070707 80%);
   padding: 6rem 2rem;
   position: relative;
   overflow: hidden;
+  color: #fff;
 }
 
+/* Intro Text */
 .stats-intro {
   text-align: center;
   margin-bottom: 4rem;
@@ -163,52 +164,74 @@ section.active {
   line-height: 1.6;
 }
 
+/* Grid Layout for Stats Cards */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 3rem;
+  gap: 2rem;
   max-width: 1200px;
   margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Stats Card Style */
+.stat-item {
+  background: linear-gradient(135deg, #1f1f1f, #2c2c2c);
+  border: 2px solid rgba(255,71,87,0.4);
+  border-radius: 20px;
+  padding: 3rem 2rem;
+  text-align: center;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.5);
   position: relative;
   z-index: 2;
 }
 
-.stat-item {
-  background: linear-gradient(145deg, #1a1a1a, #2a2a2a);
-  border: 1px solid rgba(255,71,87,0.4);
-  border-radius: 15px;
-  padding: 2rem;
-  text-align: center;
-  transition: all 0.4s ease;
-  position: relative;
-  overflow: hidden;
-}
-
 .stat-item:hover {
   transform: translateY(-10px);
-  box-shadow: 0 15px 30px rgba(255,71,87,0.25);
-  border-color: rgba(255,71,87,0.6);
+  box-shadow: 0 20px 30px rgba(255,71,87,0.3);
+  border-color: rgba(255,71,87,0.8);
 }
 
+/* Icon Style */
+.stat-item .icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: #ff4757;
+}
+
+/* Stat Number with Gradient Text */
 .stat-number {
   font-size: 4.5rem;
-  font-weight: 700;
+  font-weight: 800;
+  margin-bottom: 1rem;
   background: linear-gradient(45deg, #ff4757, #ff6b81);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-bottom: 1rem;
-  position: relative;
-  z-index: 1;
 }
 
+/* Stat Title */
 .stat-title {
-  font-size: 1.3rem;
-  color: #dcdde1;
+  font-size: 1.5rem;
+  letter-spacing: 1px;
   text-transform: uppercase;
-  letter-spacing: 2px;
-  position: relative;
-  z-index: 1;
+  color: #dcdde1;
 }
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .stat-number {
+    font-size: 3.5rem;
+  }
+  .stat-title {
+    font-size: 1.3rem;
+  }
+}
+
 
 /* ================================
  CARDS SECTION

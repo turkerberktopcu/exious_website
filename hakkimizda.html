@@ -13,21 +13,28 @@
 </head>
 <body>
   <!-- Three.js Arka Plan -->
-  <canvas id="bg-canvas"></canvas>
-
+   <canvas id="bg-canvas"></canvas>
+    <div class="blur-circle blur-circle-1"></div>
+    <div class="blur-circle blur-circle-2"></div>
+    <div class="blur-circle blur-circle-3"></div>
+    <div class="blur-circle blur-circle-4"></div>
+    
   <!-- Header (Mevcut Bileşen) -->
   <header-component></header-component>
 
   <!-- HERO BÖLÜMÜ -->
-  <section id="about-hero" class="about-hero active section">
-    <div id="about-hero-container" class="about-hero-container">
-      <h1 id="hero-title"></h1>
-      <p id="hero-subtitle"></p>
-    </div>
-  </section>
+<section id="about-hero" class="about-hero active section new-hero">
+  <div class="about-hero-content">
+    <span class="about-hero-label">CONTACT</span>
+    <h1 class="about-hero-title">Get in touch for any support and inquiries</h1>
+    <p class="about-hero-subtitle">
+      We’re all ears! Talk to us about your needs, and we’ll provide the best possible solution.
+    </p>
+  </div>
+</section>
+
 
   <!-- HİKAYE BÖLÜMÜ -->
- <!-- HİKAYE BÖLÜMÜ -->
 <section id="story-section" class="story-section active section">
   <div id="story-container" class="story-container">
     <!-- Sol Kolon: Hikaye Metni -->
@@ -45,17 +52,18 @@
       />
     </div>
   </div>
-</section>
 
 
-  <!-- EKİP BÖLÜMÜ -->
-  <section id="team-section" class="team-section active section">
-    <div id="team-container" class="team-container">
+    <div id="team-container" class="team-container" style="margin-top: 20%; margin-bottom: 10%;">
       <h2 id="team-heading"></h2>
       <!-- Team üyeleri dinamik olarak yüklenecek -->
       <div id="team-members"></div>
     </div>
-  </section>
+</section>
+
+
+  <!-- EKİP BÖLÜMÜ -->
+  
 
   <!-- Footer (Mevcut Bileşen) -->
   <footer-component></footer-component>
@@ -90,8 +98,9 @@
           const data = docSnap.data();
           
           // HERO
-          document.getElementById('hero-title').innerHTML = data.hero.title;
-          document.getElementById('hero-subtitle').innerHTML = data.hero.subtitle;
+          document.querySelector('.about-hero-title').textContent = data.hero.title;
+document.querySelector('.about-hero-subtitle').textContent = data.hero.subtitle;
+
           
           // STORY
           document.getElementById('story-heading').innerText = data.story.heading;
@@ -132,6 +141,17 @@
     // Load the page content
     loadHakkimizdaContent();
   </script>
+ <script>
+  window.addEventListener('scroll', function() {
+    const scrollPosition = window.pageYOffset;
+    const hero = document.querySelector('.new-hero');
+    // The multiplier controls the parallax speed.
+    const offset = scrollPosition * 0.5; 
+    // This keeps the image centered at 50% and adds a pixel offset as you scroll.
+    hero.style.backgroundPosition = `center calc(50% + ${offset}px)`;
+  });
+</script>
+
   
   <!-- Kütüphaneler -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
