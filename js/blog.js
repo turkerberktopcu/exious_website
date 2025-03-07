@@ -18,7 +18,7 @@ function hideLoader() {
   if (loaderEl) loaderEl.style.display = 'none';
 }
 
-// Fetch and display blogs with image support (Base64)
+// Fetch and display blogs
 window.addEventListener('DOMContentLoaded', async () => {
   showLoader();
   try {
@@ -38,18 +38,21 @@ window.addEventListener('DOMContentLoaded', async () => {
         const docId = docSnap.id;
         const title = data.title || "Untitled";
         const excerpt = data.excerpt || "";
-        let dateString = data.createdAt?.toDate().toLocaleString("tr-TR", {
-          year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit"
+        const dateString = data.createdAt?.toDate().toLocaleString("tr-TR", {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+          hour: "2-digit",
+          minute: "2-digit"
         }) || 'Tarih Yok';
-        // If a Base64 image exists, include it in the blog card.
-        const imageTag = data.image ? `<img class="blog-card-image" src="${data.image}" alt="${title}">` : '';
+
+        // We DO NOT render the <img> in the card. Instead, we only store the image in a data attribute.
         html += `
           <div class="blog-card"
                data-id="${docId}"
                data-title="${encodeURIComponent(title)}"
                data-content="${encodeURIComponent(data.content || '')}"
-               data-image=" '')}">
-            
+               data-image="${encodeURIComponent(data.image || '')}">
             <div class="blog-card-header">
               <h3>${title}</h3>
               <span class="blog-card-date">${dateString}</span>
@@ -97,5 +100,7 @@ function closeBlogModal() {
 
 modalCloseBtn.addEventListener('click', closeBlogModal);
 modalOverlay.addEventListener('click', (e) => {
-  if (e.target === modalOverlay) closeBlogModal();
+  if (e.target === modalOverlay) {
+    closeBlogModal();
+  }
 });
