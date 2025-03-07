@@ -7,8 +7,27 @@
 }
 
 body {
-  background: #0a0a0a;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
   color: #fff;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+      10deg,
+      rgba(255,71,87,0.03) 0px,
+      rgba(255,71,87,0.03) 2px,
+      transparent 2px,
+      transparent 4px
+  );
+  pointer-events: none;
+  z-index: 0;
 }
 
 /* Bölüm Temel Ayarları */
@@ -30,10 +49,10 @@ section.active {
 }
 
 /* ================================
- HERO SECTION (Old Design)
+ HERO SECTION (Updated Design)
  ================================ */
 .hero {
-  background: linear-gradient(45deg, rgba(10,10,10,0.95) 0%, rgba(26,26,26,0.85) 100%),
+  background: linear-gradient(45deg, rgba(10,10,10,0.85) 0%, rgba(26,26,26,0.75) 100%),
               url('../assets/images/futuristic-bg.jpg') center/cover;
   text-align: center;
   overflow: hidden;
@@ -79,7 +98,7 @@ section.active {
   text-transform: uppercase;
   letter-spacing: 4px;
   margin-bottom: 2rem;
-  background: linear-gradient(1055deg, #ffbec8 0%, #ffbec8 100%);
+  background: linear-gradient(105deg, #ff4757 0%, #ff6b81 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   line-height: 1.1;
@@ -90,7 +109,7 @@ section.active {
   font-size: 1.5rem;
   max-width: 800px;
   margin: 0 auto 3rem;
-  color: #dcdde1;
+  color: #f5f5f5;
   font-weight: 300;
 }
 
@@ -120,7 +139,7 @@ section.active {
 }
 
 .cta-button:hover {
-  background: rgba(255,71,87,0.1);
+  background: rgba(255,71,87,0.2);
   transform: translateY(-3px);
   box-shadow: 0 5px 25px rgba(255,71,87,0.3);
 }
@@ -132,11 +151,23 @@ section.active {
 
 /* Stats Section Container */
 .stats {
-  background: radial-gradient(circle at bottom right, rgba(25,25,30,0.4) 0%, #070707 80%);
+  background: radial-gradient(circle at bottom right, rgba(255,71,87,0.05) 0%, rgba(10,10,10,0.8) 80%);
   padding: 6rem 2rem;
   position: relative;
   overflow: hidden;
   color: #fff;
+}
+
+.stats::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(255,71,87,0.15) 0%, transparent 70%);
+  filter: blur(50px);
+  z-index: 1;
 }
 
 /* Intro Text */
@@ -158,7 +189,7 @@ section.active {
 
 .stats-intro p {
   font-size: 1.3rem;
-  color: #dcdde1;
+  color: #f5f5f5;
   max-width: 800px;
   margin: 0 auto;
   line-height: 1.6;
@@ -176,21 +207,35 @@ section.active {
 
 /* Stats Card Style */
 .stat-item {
-  background: linear-gradient(135deg, #1f1f1f, #2c2c2c);
+  background: linear-gradient(135deg, rgba(35,35,35,0.7), rgba(45,45,45,0.9));
   border: 2px solid rgba(255,71,87,0.4);
   border-radius: 20px;
   padding: 3rem 2rem;
   text-align: center;
   transition: transform 0.4s ease, box-shadow 0.4s ease;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
   position: relative;
   z-index: 2;
+  backdrop-filter: blur(5px);
 }
 
 .stat-item:hover {
   transform: translateY(-10px);
   box-shadow: 0 20px 30px rgba(255,71,87,0.3);
   border-color: rgba(255,71,87,0.8);
+}
+
+.stat-item::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  width: 50px;
+  height: 50px;
+  background: rgba(255,71,87,0.1);
+  border-radius: 50%;
+  filter: blur(30px);
+  z-index: -1;
 }
 
 /* Icon Style */
@@ -215,29 +260,14 @@ section.active {
   font-size: 1.5rem;
   letter-spacing: 1px;
   text-transform: uppercase;
-  color: #dcdde1;
+  color: #f5f5f5;
 }
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .stats-grid {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-  .stat-number {
-    font-size: 3.5rem;
-  }
-  .stat-title {
-    font-size: 1.3rem;
-  }
-}
-
 
 /* ================================
  CARDS SECTION
  ================================ */
 .cards-section {
-  background: radial-gradient(circle at bottom right, rgba(25,25,30,0.4) 0%, #070707 80%);
+  background: radial-gradient(circle at center, rgba(255,71,87,0.08) 0%, rgba(10,10,10,0.8) 70%);
   padding: 4rem 2rem;
   position: relative;
   min-height: 100vh;
@@ -246,6 +276,23 @@ section.active {
   align-items: center;
   perspective: 1000px;
   will-change: transform, opacity;
+}
+
+.cards-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    170deg,
+    rgba(255,71,87,0.03) 0px,
+    rgba(255,71,87,0.03) 2px,
+    transparent 2px,
+    transparent 8px
+  );
+  pointer-events: none;
 }
 
 .cards-container {
@@ -264,7 +311,7 @@ section.active {
   position: absolute;
   width: 300px;
   height: 380px;
-  background: linear-gradient(145deg, #111111, #1a1a1a);
+  background: linear-gradient(145deg, rgba(30,30,30,0.8), rgba(40,40,40,0.9));
   border: 1px solid rgba(255,71,87,0.3);
   border-radius: 16px;
   color: #fff;
@@ -272,19 +319,17 @@ section.active {
   overflow: hidden;
   transition: all 0.5s cubic-bezier(0.23,1,0.32,1);
   transform: translateZ(0) rotateY(0) translateX(0);
-  box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.3);
   backdrop-filter: blur(5px);
 }
 
 .card:nth-child(1) {
   transform: translateX(-220px) translateZ(-50px) rotateY(15deg);
-  background: linear-gradient(145deg, #111111, #1a1a1a);
   z-index: 1;
 }
 
 .card:nth-child(2) {
   transform: translateX(0) translateZ(50px) rotateY(0);
-  background: linear-gradient(145deg, rgba(17,17,17,0.9), rgba(26,26,26,0.9));
   border: 1px solid rgba(255,71,87,0.6);
   box-shadow: 0 20px 40px rgba(255,71,87,0.2);
   z-index: 3;
@@ -292,7 +337,6 @@ section.active {
 
 .card:nth-child(3) {
   transform: translateX(220px) translateZ(-50px) rotateY(-15deg);
-  background: linear-gradient(145deg, #111111, #1a1a1a);
   z-index: 1;
 }
 
@@ -345,7 +389,7 @@ section.active {
 }
 
 .card p {
-  color: #dcdde1;
+  color: #f5f5f5;
   line-height: 1.6;
   font-weight: 300;
 }
@@ -357,71 +401,15 @@ section.active {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(45deg, transparent, rgba(255,255,255,0.03), transparent);
+  background: linear-gradient(45deg, transparent, rgba(255,255,255,0.05), transparent);
   z-index: 10;
   pointer-events: none;
 }
 
-/* ================================
- Responsive Design
- ================================ */
-@media (max-width: 768px) {
-  h1 {
-      font-size: 3rem;
-  }
-
-  .stats-grid {
-      grid-template-columns: 1fr;
-      gap: 2rem;
-  }
-
-  .stat-number {
-      font-size: 3.5rem;
-  }
-
-  .stat-title {
-      font-size: 1.1rem;
-  }
-
-  .stats-intro h2 {
-      font-size: 2rem;
-  }
-
-  .stats-intro p {
-      font-size: 1.1rem;
-  }
-
-  .hero p {
-      font-size: 1.2rem;
-  }
-
-  .cards-container {
-      flex-direction: column;
-      height: auto;
-      gap: 2rem;
-  }
-  
-  .card {
-      position: relative;
-      width: 100%;
-      max-width: 300px;
-      margin: 1rem 0;
-      transform: none !important;
-  }
-  
-  .card:hover {
-      transform: translateY(-10px) !important;
-  }
-}
-
-/* ================================
- Diğer Bölümlerin (Bridge, Loader vb.) Mevcut Ayarları
- ================================ */
-
 /* Bridge Section */
 .bridge-section {
   position: relative;
-  background: linear-gradient(45deg, #141414, #1f1f1f);
+  background: linear-gradient(45deg, rgba(30,30,30,0.8), rgba(40,40,40,0.9));
   min-height: 60vh;
   display: flex;
   align-items: center;
@@ -442,8 +430,8 @@ section.active {
   height: 100%;
   background: repeating-linear-gradient(
     10deg,
-    rgba(255,71,87,0.08) 0px,
-    rgba(255,71,87,0.08) 2px,
+    rgba(255,71,87,0.05) 0px,
+    rgba(255,71,87,0.05) 2px,
     transparent 2px,
     transparent 4px
   );
@@ -469,7 +457,7 @@ section.active {
 .bridge-section p {
   max-width: 700px;
   margin: 0 auto 2rem;
-  color: #dcdde1;
+  color: #f5f5f5;
   line-height: 1.6;
   font-weight: 300;
 }
@@ -500,7 +488,7 @@ section.active {
   left: 0;
   width: 100%;
   height: 100px;
-  background: #0a0a0a;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
   z-index: 1;
 }
 
@@ -518,7 +506,7 @@ section.active {
   position: absolute;
   width: 150px;
   height: 150px;
-  background: #ff4757;
+  background: rgba(255,71,87,0.5);
   border-radius: 50%;
   filter: blur(50px);
   opacity: 0.3;
@@ -541,6 +529,112 @@ section.active {
   100% { transform: translateY(-20px) translateX(20px); }
 }
 
+/* FAQ Section Container */
+.faq-section {
+  background: radial-gradient(circle at top left, rgba(255,71,87,0.08) 0%, rgba(10,10,10,0.8) 70%);
+  padding: 4rem 2rem;
+  color: #fff;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.faq-section::before {
+  content: '';
+  position: absolute;
+  top: -100px;
+  left: -100px;
+  width: 300px;
+  height: 300px;
+  background: rgba(255,71,87,0.1);
+  border-radius: 50%;
+  filter: blur(80px);
+  z-index: 0;
+}
+
+/* FAQ Header */
+.faq-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  position: relative;
+  z-index: 2;
+}
+
+.faq-header h2 {
+  font-size: 2.8rem;
+  background: linear-gradient(45deg, #ff4757, #ff6b81);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 0.5rem;
+}
+
+.faq-header p {
+  font-size: 1.2rem;
+  color: #f5f5f5;
+}
+
+/* FAQ Container */
+.faq-container {
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+/* FAQ Item Styles */
+.faq-item {
+  background: linear-gradient(145deg, rgba(35,35,35,0.8), rgba(45,45,45,0.9));
+  border: 1px solid rgba(255,71,87,0.4);
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  overflow: hidden;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  backdrop-filter: blur(5px);
+}
+
+.faq-item:hover {
+  box-shadow: 0 10px 20px rgba(255,71,87,0.3);
+  transform: translateY(-3px);
+}
+
+/* FAQ Question */
+.faq-question {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  cursor: pointer;
+  font-size: 1.4rem;
+}
+
+.faq-question i {
+  transition: transform 0.3s ease;
+  color: #ff4757;
+}
+
+/* FAQ Answer (Collapsible) */
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease;
+  padding: 0 1.5rem;
+}
+
+.faq-answer p {
+  padding: 1rem 0;
+  font-size: 1.2rem;
+  color: #f5f5f5;
+}
+
+/* Active State */
+.faq-item.active .faq-answer {
+  max-height: 500px; /* Adjust this value if needed */
+}
+
+.faq-item.active .faq-question i {
+  transform: rotate(180deg);
+}
+
 /* Loader Overlay */
 .loader-overlay {
   position: fixed;
@@ -548,7 +642,7 @@ section.active {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(10,10,10,0.8);
+  background: rgba(10,10,10,0.9);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -567,4 +661,62 @@ section.active {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 3rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .stat-number {
+    font-size: 3.5rem;
+  }
+
+  .stat-title {
+    font-size: 1.1rem;
+  }
+
+  .stats-intro h2 {
+    font-size: 2rem;
+  }
+
+  .stats-intro p {
+    font-size: 1.1rem;
+  }
+
+  .hero p {
+    font-size: 1.2rem;
+  }
+
+  .cards-container {
+    flex-direction: column;
+    height: auto;
+    gap: 2rem;
+  }
+  
+  .card {
+    position: relative;
+    width: 100%;
+    max-width: 300px;
+    margin: 1rem 0;
+    transform: none !important;
+  }
+  
+  .card:hover {
+    transform: translateY(-10px) !important;
+  }
+  
+  .faq-question {
+    font-size: 1.2rem;
+  }
+  
+  .faq-answer p {
+    font-size: 1rem;
+  }
 }

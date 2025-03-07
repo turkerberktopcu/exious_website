@@ -54,18 +54,16 @@
   
   
   
-  <!-- Blog Section with Header & Sample Card -->
-  <section class="blog-list-section active">
-    <div class="blog-section-header">
-      <h2>Son Bloglar</h2>
-      <p>En güncel haberlerimizden ve makalelerimizden haberdar olun</p>
+  <section class="faq-section active">
+    <div class="faq-header">
+      <h2>Sık Sorulan Sorular</h2>
+      <p>En sık sorulan sorular ve cevaplarımız</p>
     </div>
-    <div class="blog-list-container">
-      <!-- Sample Static Blog Card -->
-      <div class="blog-card"></div>
-      <!-- Dynamically loaded blog cards will appear here -->
+    <div class="faq-container">
+      <!-- Dynamic FAQ items will be inserted here -->
     </div>
   </section>
+  
 
   <section class="cards-section">
     <div class="cards-container">
@@ -131,6 +129,71 @@
   observer.observe(document.querySelector('.stats'));
 });
 
+
+  </script>
+  <script type="module">
+    // Make sure to import your Firestore configuration and methods
+import { db } from './firebase-config.js';
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+
+async function loadFAQData() {
+  try {
+    // Reference the FAQ document in the "site_content" collection
+    const faqDocRef = doc(db, 'site_content', 'faq');
+    const faqSnap = await getDoc(faqDocRef);
+    
+    if (faqSnap.exists()) {
+      const faqData = faqSnap.data();
+      renderFAQ(faqData);
+    } else {
+      console.error("FAQ document does not exist.");
+      document.querySelector('.faq-container').innerHTML = "<p>No FAQ data available.</p>";
+    }
+  } catch (error) {
+    console.error("Error loading FAQ data:", error);
+    document.querySelector('.faq-container').innerHTML = "<p>Hata: FAQ verileri yüklenemedi.</p>";
+  }
+}
+
+function renderFAQ(data) {
+  const faqContainer = document.querySelector('.faq-container');
+  faqContainer.innerHTML = ""; // Clear any existing FAQ items
+
+  if (data && data.items && data.items.length > 0) {
+    data.items.forEach((item, index) => {
+      // Create FAQ item container
+      const faqItem = document.createElement("div");
+      faqItem.classList.add("faq-item");
+
+      // Build the question part
+      const faqQuestion = document.createElement("div");
+      faqQuestion.classList.add("faq-question");
+      faqQuestion.innerHTML = `<span>${item.question}</span> <i class="fas fa-chevron-down"></i>`;
+
+      // Build the answer part
+      const faqAnswer = document.createElement("div");
+      faqAnswer.classList.add("faq-answer");
+      faqAnswer.innerHTML = `<p>${item.answer}</p>`;
+
+      // Append question and answer to the item container
+      faqItem.appendChild(faqQuestion);
+      faqItem.appendChild(faqAnswer);
+
+      // Add click event to toggle the "active" class for accordion behavior
+      faqQuestion.addEventListener("click", function() {
+        faqItem.classList.toggle("active");
+      });
+
+      // Append the FAQ item to the container
+      faqContainer.appendChild(faqItem);
+    });
+  } else {
+    faqContainer.innerHTML = "<p>FAQ items not found.</p>";
+  }
+}
+
+// Load FAQ data when the DOM is ready
+document.addEventListener("DOMContentLoaded", loadFAQData);
 
   </script>
 </body>
