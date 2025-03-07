@@ -1,8 +1,5 @@
 import { db } from '../firebase-config.js';
-import {
-  collection,
-  getDocs
-} from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+import { collection, getDocs } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 
 const blogListContainer = document.querySelector('.blog-list-container');
 const modalOverlay = document.querySelector('.blog-modal-overlay');
@@ -11,7 +8,7 @@ const modalCloseBtn = document.querySelector('.blog-modal-close');
 const modalTitle = document.querySelector('.blog-modal-title');
 const modalContent = document.querySelector('.blog-modal-content');
 
-// Loader
+// Loader functions
 function showLoader() {
   const loaderEl = document.getElementById('loader');
   if (loaderEl) loaderEl.style.display = 'flex';
@@ -21,12 +18,11 @@ function hideLoader() {
   if (loaderEl) loaderEl.style.display = 'none';
 }
 
-// Fetch and Display Blogs
+// Fetch and display blogs with image support (Base64)
 window.addEventListener('DOMContentLoaded', async () => {
   showLoader();
   try {
     const snapshot = await getDocs(collection(db, 'blogs'));
-
     if (snapshot.empty) {
       blogListContainer.innerHTML = `
         <div class="empty-blog-state">
@@ -35,7 +31,6 @@ window.addEventListener('DOMContentLoaded', async () => {
           <div class="empty-blog-deco"></div>
         </div>
       `;
-      // GSAP animasyonu kaldırıldı
     } else {
       let html = '';
       snapshot.forEach(docSnap => {
@@ -46,12 +41,15 @@ window.addEventListener('DOMContentLoaded', async () => {
         let dateString = data.createdAt?.toDate().toLocaleString("tr-TR", {
           year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit"
         }) || 'Tarih Yok';
-
+        // If a Base64 image exists, include it in the blog card.
+        const imageTag = data.image ? `<img class="blog-card-image" src="${data.image}" alt="${title}">` : '';
         html += `
           <div class="blog-card"
                data-id="${docId}"
                data-title="${encodeURIComponent(title)}"
-               data-content="${encodeURIComponent(data.content || '')}">
+               data-content="${encodeURIComponent(data.content || '')}"
+               data-image=" '')}">
+            
             <div class="blog-card-header">
               <h3>${title}</h3>
               <span class="blog-card-date">${dateString}</span>
@@ -60,10 +58,7 @@ window.addEventListener('DOMContentLoaded', async () => {
           </div>
         `;
       });
-
       blogListContainer.innerHTML = html;
-      
-      // GSAP animasyonu kaldırıldı
     }
   } catch (error) {
     console.error("Error fetching blogs:", error);
@@ -72,30 +67,32 @@ window.addEventListener('DOMContentLoaded', async () => {
   }
 });
 
-// Event Delegation for Blog Card Click
+// Event delegation for blog card clicks
 blogListContainer.addEventListener('click', (e) => {
   const card = e.target.closest('.blog-card');
   if (card) {
     const cardTitle = decodeURIComponent(card.getAttribute('data-title'));
     const cardContent = decodeURIComponent(card.getAttribute('data-content'));
-    openBlogModal(cardTitle, cardContent);
+    const cardImage = decodeURIComponent(card.getAttribute('data-image'));
+    openBlogModal(cardTitle, cardContent, cardImage);
   }
 });
 
-// Hover animasyonları kaldırıldı
-
-// Open Modal (animasyonlar kaldırıldı)
-function openBlogModal(title, content) {
+// Open modal and include image if available
+function openBlogModal(title, content, image) {
   modalTitle.textContent = title;
-  modalContent.innerHTML = content;
+  let modalHtml = '';
+  if (image) {
+    modalHtml += `<img class="blog-modal-image" src="${image}" alt="${title}">`;
+  }
+  modalHtml += content;
+  modalContent.innerHTML = modalHtml;
   modalOverlay.classList.add('active');
-  // GSAP animasyonu kaldırıldı
 }
 
-// Close Modal (animasyonlar kaldırıldı)
+// Close modal
 function closeBlogModal() {
   modalOverlay.classList.remove('active');
-  // GSAP animasyonu kaldırıldı
 }
 
 modalCloseBtn.addEventListener('click', closeBlogModal);

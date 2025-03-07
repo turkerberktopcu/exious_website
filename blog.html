@@ -8,11 +8,23 @@
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="components/header/header.css" />
   <link rel="stylesheet" href="css/blog.css" />
+  <style>
+    /* Optional inline CSS for image styling */
+    .blog-card-image {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin-bottom: 10px;
+    }
+    .blog-modal-image {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin-bottom: 20px;
+    }
+  </style>
 </head>
 <body>
-  
-
-
   <!-- Header -->
   <header-component></header-component>
 
@@ -36,17 +48,14 @@
   <div class="blog-modal-overlay">
     <div class="blog-modal">
       <button class="blog-modal-close">×</button>
-      <div class="blog-modal-header"></div>
       <div class="blog-modal-body">
         <div class="blog-modal-meta">
           <div class="blog-modal-date">
-          
-            </svg>
+            <!-- Optional date icon -->
             <span class="blog-date-display"></span>
           </div>
           <div class="blog-modal-author">
-           
-            </svg>
+            <!-- Optional author icon -->
             <span class="blog-author-display">EXIUS Team</span>
           </div>
         </div>

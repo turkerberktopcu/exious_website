@@ -1,4 +1,6 @@
-// admin-panel.js
+// ------------------------------
+// IMPORTS
+// ------------------------------
 import { db, auth } from '../../firebase-config.js';
 import {
   signInWithEmailAndPassword,
@@ -16,19 +18,17 @@ import {
   serverTimestamp,
   addDoc
 } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
-// Firestore'dan onSnapshot fonksiyonu için import ekleyin:
 import { onSnapshot } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 
-// Kullanıcı oturum açtığında mesaj sayısını dinle:
+// ------------------------------
+// AUTHENTICATION & INITIAL SETUP
+// ------------------------------
 onAuthStateChanged(auth, user => {
   if (user) {
-    // Oturum açıldıktan sonra diğer işlemler...
     document.getElementById('login-section').style.display = 'none';
     document.getElementById('content-editor').style.display = 'block';
-    loadSiteContentEditors(); // Default tab
+    loadSiteContentEditors(); // Varsayılan sekme
     setupAdminNav();
-    
-    // Mesaj sayısını gerçek zamanlı güncellemek için:
     initMessageCountListener();
   } else {
     document.getElementById('login-section').style.display = 'block';
@@ -36,7 +36,6 @@ onAuthStateChanged(auth, user => {
   }
 });
 
-// Mesaj sayısını gerçek zamanlı güncelleyen fonksiyon:
 function initMessageCountListener() {
   const messagesCollection = collection(db, 'contact_messages');
   onSnapshot(messagesCollection, (snapshot) => {
@@ -44,12 +43,9 @@ function initMessageCountListener() {
   });
 }
 
-
-// Admin login
 window.adminLogin = async function() {
   const email = document.getElementById('admin-email').value;
   const password = document.getElementById('admin-password').value;
-
   try {
     await signInWithEmailAndPassword(auth, email, password);
     document.getElementById('login-section').style.display = 'none';
@@ -61,17 +57,15 @@ window.adminLogin = async function() {
   }
 };
 
-// Logout
 window.logoutAdmin = async function() {
   await signOut(auth);
   document.getElementById('login-section').style.display = 'block';
   document.getElementById('content-editor').style.display = 'none';
 };
 
-/** 
- * Setup admin navigation clicks
- */
-
+// ------------------------------
+// NAVIGATION
+// ------------------------------
 function setupAdminNav() {
   const navLinks = document.querySelectorAll('.admin-nav a');
   navLinks.forEach(link => {
@@ -91,17 +85,36 @@ function setupAdminNav() {
         loadMessages();
       } else if (panel === 'hakkimizda') {
         loadHakkimizdaEditor();
-      }else if (panel === 'features') {
+      } else if (panel === 'features') {
         loadFeaturesEditor();
-      }      
+      }
     });
   });
 }
-// Admin panelde Features içeriğini yükleyen fonksiyon:
+
+// ------------------------------
+// BLOG IMAGE UPLOAD (Yeni blog resmi)
+// ------------------------------
+async function uploadBlogImage(file) {
+  // Convert the file to a Base64 string and return it
+  return await convertFileToBase64(file);
+}
+
+function convertFileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+  });
+}
+
+// ------------------------------
+// FEATURES SECTION
+// ------------------------------
 async function loadFeaturesEditor() {
   try {
     showLoader();
-    // Eğer belge mevcut değilse default veriyi oluşturabilirsiniz:
     let featuresData = await getContentSection('features');
     if (!featuresData) {
       await setDoc(doc(db, 'site_content', 'features'), {
@@ -137,7 +150,6 @@ async function loadFeaturesEditor() {
   }
 }
 
-// Oluşturulan özellikler editörü HTML'ini döndüren fonksiyon:
 function createFeaturesEditor(data) {
   if (!data) return '';
   let itemsHTML = '';
@@ -180,7 +192,6 @@ function createFeaturesEditor(data) {
   `;
 }
 
-// Özellikler bölümünü Firestore’a güncelleyen fonksiyon:
 window.updateFeatures = async function() {
   try {
     const title = document.getElementById('features-title').value;
@@ -201,7 +212,6 @@ window.updateFeatures = async function() {
   }
 };
 
-// Yeni özellik ekleme fonksiyonu:
 window.addNewFeatureItem = async function() {
   try {
     let featuresData = await getContentSection('features');
@@ -214,14 +224,13 @@ window.addNewFeatureItem = async function() {
     });
     await updateDoc(doc(db, 'site_content', 'features'), { items: featuresData.items });
     alert("Yeni özellik eklendi!");
-    loadFeaturesEditor(); // Editörü yeniden yükle
+    loadFeaturesEditor();
   } catch (error) {
     console.error("Yeni özellik ekleme hatası:", error);
     alert("Yeni özellik eklenirken hata: " + error.message);
   }
 };
 
-// Özellik silme fonksiyonu:
 window.removeFeatureItem = async function(index) {
   try {
     let featuresData = await getContentSection('features');
@@ -229,44 +238,41 @@ window.removeFeatureItem = async function(index) {
     featuresData.items.splice(index, 1);
     await updateDoc(doc(db, 'site_content', 'features'), { items: featuresData.items });
     alert("Özellik silindi!");
-    loadFeaturesEditor(); // Editörü yeniden yükle
+    loadFeaturesEditor();
   } catch (error) {
     console.error("Özellik silme hatası:", error);
     alert("Özellik silinirken hata: " + error.message);
   }
 };
 
+// ------------------------------
+// HAKKIMIZDA SECTION
+// ------------------------------
 async function loadHakkimizdaEditor() {
   try {
     showLoader();
-    // Fetch hakkımızda content (assuming it’s stored in 'pages/hakkimizda')
     const docRef = doc(db, 'pages', 'hakkimizda');
     const docSnap = await getDoc(docRef);
     let data = {};
     if (docSnap.exists()) {
       data = docSnap.data();
     } else {
-      // Optionally, create default data if it doesn't exist
       data = {
         hero: { title: "Küçük Ekipler, Büyük İşler", subtitle: "EXIUS ekibiyle tanışın ve birlikte neler başardığımızı öğrenin." },
         story: { heading: "Bizim Hikayemiz", content: "EXIUS, 2011 yılında ilk sunucu denemesine başladığında..." },
         team: { heading: "Ekibimizle Tanışın", members: [
           { role: "Kurucu", name: "Batuhan Tonga" },
-          { role: "Geliştirme Lideri", name: "Enes Aklık" },
-          // … add more members as needed
+          { role: "Geliştirme Lideri", name: "Enes Aklık" }
         ]}
       };
       await setDoc(docRef, data);
     }
-    
-    // Build the editor HTML
     const editorHTML = `
       <div class="editor-container">
         <div class="editor-header">
           <h2>Hakkımızda Sayfası Yönetimi</h2>
           <button onclick="logoutAdmin()" class="logout-btn">Çıkış Yap</button>
         </div>
-        <!-- Hero Section -->
         <div class="editor-section">
           <h3>Hero Bölümü</h3>
           <div class="form-group">
@@ -278,7 +284,6 @@ async function loadHakkimizdaEditor() {
             <textarea id="hakkimizda-hero-subtitle" rows="2">${data.hero.subtitle}</textarea>
           </div>
         </div>
-        <!-- Story Section -->
         <div class="editor-section">
           <h3>Hikaye Bölümü</h3>
           <div class="form-group">
@@ -290,7 +295,6 @@ async function loadHakkimizdaEditor() {
             <textarea id="hakkimizda-story-content" rows="4">${data.story.content}</textarea>
           </div>
         </div>
-        <!-- Team Section -->
         <div class="editor-section">
           <h3>Ekibimiz</h3>
           <div class="form-group">
@@ -315,41 +319,32 @@ async function loadHakkimizdaEditor() {
         <button onclick="updateHakkimizdaContent()" class="update-btn">Güncelle</button>
       </div>
     `;
-    
-    // Inject editor HTML into a dedicated container
     document.getElementById('site-content-editor').innerHTML = editorHTML;
     document.getElementById('site-content-editor').style.display = 'block';
     document.getElementById('faq-editor').style.display = 'none';
     document.getElementById('messages-editor').style.display = 'none';
     document.getElementById('blogs-editor').style.display = 'none';
-  
   } catch (error) {
-    console.error("Error loading hakkımızda editor:", error);
+    console.error("Error loading hakkimizda editor:", error);
     alert("Hakkımızda içeriği yüklenirken hata oluştu: " + error.message);
   } finally {
     hideLoader();
   }
 }
 
-// ---------- SITE CONTENT (Hero, Stats, Cards) ----------
+// ------------------------------
+// SITE CONTENT EDITORS (Hero, Stats, Cards)
+// ------------------------------
 async function loadSiteContentEditors() {
   try {
-    // Ensure docs exist
     showLoader();
-
     await initializeSiteContent();
-
-    // Fetch data
     const heroData  = await getContentSection('hero');
     const statsData = await getContentSection('stats');
     const cardsData = await getContentSection('cards');
-
-    // Build forms
     const heroEditorHTML  = createHeroEditor(heroData);
     const statsEditorHTML = createStatsEditor(statsData);
     const cardsEditorHTML = createCardsEditor(cardsData);
-
-    // Insert into #site-content-editor
     document.getElementById('site-content-editor').innerHTML = `
       <div class="editor-container">
         <div class="editor-header">
@@ -361,11 +356,8 @@ async function loadSiteContentEditors() {
         ${cardsEditorHTML}
       </div>
     `;
-
-    // Show site-content-editor, hide faq-editor
     document.getElementById('site-content-editor').style.display = 'block';
     document.getElementById('faq-editor').style.display = 'none';
-
   } catch (error) {
     console.error("Error loading site content editors:", error);
     alert("İçerik yüklenirken bir hata oluştu: " + error.message);
@@ -373,378 +365,249 @@ async function loadSiteContentEditors() {
     hideLoader();
   }
 }
-// NEW: loadBlogs()
+
+// ------------------------------
+// BLOG SECTION
+// ------------------------------
 async function loadBlogs() {
-    try {
-      showLoader();
-  
-      // (Optional) ensure site content is initialized
-      await initializeSiteContent();
-  
-      // 1) Fetch all docs from "blogs" collection
-      const snapshot = await getDocs(collection(db, 'blogs'));
-  
-      // 2) Build the HTML for the blog editor
-      let blogHTML = `
-        <div class="editor-container">
-          <div class="editor-header">
-            <h2>Blog Yönetimi</h2>
-            <button onclick="logoutAdmin()" class="logout-btn">Çıkış Yap</button>
-          </div>
-  
-          <!-- CREATE NEW BLOG FORM -->
-          <div class="editor-section">
-            <h3>Yeni Blog Oluştur</h3>
-            <div class="form-group">
-              <label for="blog-title">Başlık:</label>
-              <input type="text" id="blog-title" placeholder="Blog Başlığı" />
-            </div>
-            <div class="form-group">
-              <label for="blog-excerpt">Özet:</label>
-              <textarea id="blog-excerpt" rows="2" placeholder="Kısa özet"></textarea>
-            </div>
-            <div class="form-group">
-              <label for="blog-content">İçerik:</label>
-              <textarea id="blog-content" rows="5" placeholder="Tam blog içeriği"></textarea>
-            </div>
-            <button class="update-btn" onclick="createBlog()">Kaydet</button>
-          </div>
-  
-          <!-- LIST EXISTING BLOGS -->
-          <div class="editor-section">
-            <h3>Mevcut Bloglar</h3>
-      `;
-  
-      snapshot.forEach(docSnap => {
-        const docId = docSnap.id;
-        const data = docSnap.data();
-        const title = data.title || "Untitled Blog";
-  
-        blogHTML += `
-            <div class="card-item-editor">
-              <h4>${title}</h4>
-              <button class="update-btn" onclick="deleteBlog('${docId}')">Sil</button>
-            </div>
-        `;
-      });
-  
-      blogHTML += `
-          </div> <!-- end .editor-section -->
-        </div> <!-- end .editor-container -->
-      `;
-  
-      // 3) Insert into #blogs-editor, show it
-      document.getElementById('blogs-editor').innerHTML = blogHTML;
-      document.getElementById('blogs-editor').style.display = 'block';
-  
-      // Hide other editors
-      document.getElementById('site-content-editor').style.display = 'none';
-      document.getElementById('faq-editor').style.display = 'none';
-      document.getElementById('messages-editor').style.display = 'none';
-  
-    } catch (error) {
-      console.error("Error loading blogs:", error);
-      alert("Bloglar yüklenirken hata oluştu: " + error.message);
-    } finally {
-      hideLoader();
-    }
-  }
-  
-
-  async function loadMessages() {
-    try {
-        showLoader();
-        // Firestore'dan mesajları çek
-        const snapshot = await getDocs(collection(db, 'contact_messages'));
-
-        // Mesaj sayısını güncelle
-        document.getElementById('messagesCount').textContent = snapshot.size;
-
-        // Mesajların listelenmesi
-        let messagesHTML = `
-          <div class="editor-container">
-            <div class="editor-header">
-              <h2>Gelen Mesajlar</h2>
-              <button onclick="logoutAdmin()" class="logout-btn">Çıkış Yap</button>
-            </div>
-            <div class="messages-list">
-        `;
-        snapshot.forEach(docSnap => {
-            const docId = docSnap.id;
-            const data = docSnap.data();
-            const name = data.name || "Belirtilmedi";
-            const email = data.email || "Belirtilmedi";
-            const message = data.message || "Mesaj yok";
-    
-            messagesHTML += `
-              <div class="message-card">
-                <h4>${name}</h4>
-                <p>Email: ${email}</p>
-                <p>Mesaj: ${message}</p>
-                <button class="delete-msg-btn" onclick="deleteMessage('${docId}')">Sil</button>
-              </div>
-            `;
-        });
-    
-        messagesHTML += `
-            </div>
-          </div>
-        `;
-    
-        document.getElementById('messages-editor').innerHTML = messagesHTML;
-        document.getElementById('site-content-editor').style.display = 'none';
-        document.getElementById('faq-editor').style.display = 'none';
-        document.getElementById('messages-editor').style.display = 'block';
-    } catch (error) {
-        console.error("Error loading messages:", error);
-        alert("Mesajlar yüklenirken hata oluştu: " + error.message);
-    } finally {
-        hideLoader();
-    }
-}
-
-  
-
-// ---------- FAQ EDITOR ----------
-async function loadFAQEditor() {
   try {
     showLoader();
-    // Ensure docs exist
     await initializeSiteContent();
-
-    // Fetch FAQ data
-    const faqData = await getContentSection('faq');
-
-    // Build FAQ form
-    const faqEditorHTML = createFAQEditor(faqData);
-
-    // Insert into #faq-editor
-    document.getElementById('faq-editor').innerHTML = `
+    const snapshot = await getDocs(collection(db, 'blogs'));
+    let blogHTML = `
       <div class="editor-container">
         <div class="editor-header">
-          <h2>FAQ Yönetimi</h2>
+          <h2>Blog Yönetimi</h2>
           <button onclick="logoutAdmin()" class="logout-btn">Çıkış Yap</button>
         </div>
-        ${faqEditorHTML}
+        <!-- CREATE NEW BLOG FORM -->
+        <div class="editor-section">
+          <h3>Yeni Blog Oluştur</h3>
+          <div class="form-group">
+            <label for="blog-title">Başlık:</label>
+            <input type="text" id="blog-title" placeholder="Blog Başlığı" />
+          </div>
+          <div class="form-group">
+            <label for="blog-excerpt">Özet:</label>
+            <textarea id="blog-excerpt" rows="2" placeholder="Kısa özet"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="blog-content">İçerik:</label>
+            <textarea id="blog-content" rows="5" placeholder="Tam blog içeriği"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="blog-image">Blog Resmi:</label>
+            <input type="file" id="blog-image" accept="image/*" />
+          </div>
+          <button class="update-btn" onclick="createBlog()">Kaydet</button>
+        </div>
+        <!-- LIST EXISTING BLOGS -->
+        <div class="editor-section">
+          <h3>Mevcut Bloglar</h3>
+    `;
+    snapshot.forEach(docSnap => {
+      const docId = docSnap.id;
+      const data = docSnap.data();
+      const title = data.title || "Untitled Blog";
+      blogHTML += `
+          <div class="card-item-editor">
+            <h4>${title}</h4>
+            <button class="update-btn" onclick="deleteBlog('${docId}')">Sil</button>
+          </div>
+      `;
+    });
+    blogHTML += `
+        </div>
       </div>
     `;
-
-    // Show faq-editor, hide site-content-editor
+    document.getElementById('blogs-editor').innerHTML = blogHTML;
+    document.getElementById('blogs-editor').style.display = 'block';
     document.getElementById('site-content-editor').style.display = 'none';
-    document.getElementById('faq-editor').style.display = 'block';
-
+    document.getElementById('faq-editor').style.display = 'none';
+    document.getElementById('messages-editor').style.display = 'none';
   } catch (error) {
-    console.error("Error loading FAQ editor:", error);
-    alert("FAQ yüklenirken bir hata oluştu: " + error.message);
+    console.error("Error loading blogs:", error);
+    alert("Bloglar yüklenirken hata oluştu: " + error.message);
   } finally {
     hideLoader();
   }
 }
 
-function createFAQEditor(data) {
-    if (!data) return `
-      <div class="editor-section">
-        <p>Henüz bir FAQ verisi bulunamadı.</p>
-        <button onclick="createDefaultFAQ()" class="update-btn">Varsayılan FAQ Oluştur</button>
-      </div>
+async function loadMessages() {
+  try {
+    showLoader();
+    const snapshot = await getDocs(collection(db, 'contact_messages'));
+    document.getElementById('messagesCount').textContent = snapshot.size;
+    let messagesHTML = `
+      <div class="editor-container">
+        <div class="editor-header">
+          <h2>Gelen Mesajlar</h2>
+          <button onclick="logoutAdmin()" class="logout-btn">Çıkış Yap</button>
+        </div>
+        <div class="messages-list">
     `;
-  
-    // 1) Build FAQ items
-    let faqItemsHTML = '';
-    if (data.items) {
-      data.items.forEach((item, i) => {
-        faqItemsHTML += `
-          <div class="card-item-editor">
-            <h4>FAQ ${i + 1}</h4>
-            <div class="form-group">
-              <label for="faq-question-${i}">Soru:</label>
-              <input type="text" id="faq-question-${i}" value="${item.question}">
-            </div>
-            <div class="form-group">
-              <label for="faq-answer-${i}">Cevap:</label>
-              <textarea id="faq-answer-${i}">${item.answer}</textarea>
-            </div>
-            <button type="button" class="update-btn" onclick="removeFAQItem(${i})">Bu SSS'yi Sil</button>
-          </div>
-        `;
-      });
-    }
-  
-    // 2) Build Social Links
-    let socialHTML = '';
-    if (!data.socialLinks) data.socialLinks = [];
-    data.socialLinks.forEach((link, i) => {
-      socialHTML += `
-        <div class="card-item-editor">
-          <h4>Sosyal Link ${i + 1}</h4>
-          <div class="form-group">
-            <label for="social-label-${i}">Label:</label>
-            <input type="text" id="social-label-${i}" value="${link.label}">
-          </div>
-          <div class="form-group">
-            <label for="social-url-${i}">URL:</label>
-            <input type="text" id="social-url-${i}" value="${link.url}">
-          </div>
-          <button type="button" class="update-btn" onclick="removeSocialLink(${i})">Bu Linki Sil</button>
+    snapshot.forEach(docSnap => {
+      const docId = docSnap.id;
+      const data = docSnap.data();
+      const name = data.name || "Belirtilmedi";
+      const email = data.email || "Belirtilmedi";
+      const message = data.message || "Mesaj yok";
+      messagesHTML += `
+        <div class="message-card">
+          <h4>${name}</h4>
+          <p>Email: ${email}</p>
+          <p>Mesaj: ${message}</p>
+          <button class="delete-msg-btn" onclick="deleteMessage('${docId}')">Sil</button>
         </div>
       `;
     });
-  
-    return `
-      <!-- FAQ Items -->
-      <div class="editor-section">
-        <h3>Sık Sorulan Sorular</h3>
-        ${faqItemsHTML}
-        <button onclick="updateFAQ()" class="update-btn">FAQ Güncelle</button>
-        <button onclick="addNewFAQItem()" class="update-btn">Yeni SSS Ekle</button>
-      </div>
-  
-      <!-- Social Links -->
-      <div class="editor-section">
-        <h3>Sosyal Linkler</h3>
-        ${socialHTML}
-        <button onclick="updateSocialLinks()" class="update-btn">Linkleri Güncelle</button>
-        <button onclick="addNewSocialLink()" class="update-btn">Yeni Link Ekle</button>
+    messagesHTML += `
+        </div>
       </div>
     `;
+    document.getElementById('messages-editor').innerHTML = messagesHTML;
+    document.getElementById('site-content-editor').style.display = 'none';
+    document.getElementById('faq-editor').style.display = 'none';
+    document.getElementById('messages-editor').style.display = 'block';
+  } catch (error) {
+    console.error("Error loading messages:", error);
+    alert("Mesajlar yüklenirken hata oluştu: " + error.message);
+  } finally {
+    hideLoader();
   }
-    // NEW: createBlog()
-    window.createBlog = async function() {
-        try {
-          showLoader();
-      
-          const titleEl = document.getElementById('blog-title');
-          const excerptEl = document.getElementById('blog-excerpt');
-          const contentEl = document.getElementById('blog-content');
-      
-          const newBlog = {
-            title: titleEl.value,
-            excerpt: excerptEl.value,
-            content: contentEl.value,
-            createdAt: serverTimestamp()
-          };
-      
-          await addDoc(collection(db, 'blogs'), newBlog);
-          alert("Yeni blog eklendi!");
-          loadBlogs(); // Refresh the list
-        } catch (error) {
-          console.error("createBlog error:", error);
-          alert("Blog eklenirken hata: " + error.message);
-        } finally {
-          hideLoader();
-        }
-      };
-      
-      // NEW: deleteBlog(docId)
-      window.deleteBlog = async function(docId) {
-        try {
-          showLoader();
-          await deleteDoc(doc(db, 'blogs', docId));
-          alert("Blog silindi!");
-          loadBlogs(); // Refresh
-        } catch (error) {
-          console.error("deleteBlog error:", error);
-          alert("Blog silinirken hata: " + error.message);
-        } finally {
-          hideLoader();
-        }
-      };
-  window.deleteMessage = async function(docId) {
-    try {
-      // Attempt to delete the doc
-      await deleteDoc(doc(db, 'contact_messages', docId));
-      alert('Mesaj silindi!');
-  
-      // Reload the message list
-      loadMessages();
-    } catch (error) {
-      console.error('Mesaj silinirken hata:', error);
-      alert('Mesaj silinirken hata: ' + error.message);
+}
+
+// ------------------------------
+// BLOG FUNCTIONS
+// ------------------------------
+window.createBlog = async function() {
+  try {
+    showLoader();
+    const titleEl = document.getElementById('blog-title');
+    const excerptEl = document.getElementById('blog-excerpt');
+    const contentEl = document.getElementById('blog-content');
+    const imageInput = document.getElementById('blog-image');
+    let imagePath = "";
+    if (imageInput && imageInput.files && imageInput.files[0]) {
+      const file = imageInput.files[0];
+      imagePath = await uploadBlogImage(file);
     }
-  };
-  
-  window.updateHakkimizdaContent = async function() {
-    try {
-      showLoader();
-      // Build updated data from the form fields
-      const updatedData = {
-        hero: {
-          title: document.getElementById('hakkimizda-hero-title').value,
-          subtitle: document.getElementById('hakkimizda-hero-subtitle').value
-        },
-        story: {
-          heading: document.getElementById('hakkimizda-story-heading').value,
-          content: document.getElementById('hakkimizda-story-content').value
-        },
-        team: {
-          heading: document.getElementById('hakkimizda-team-heading').value,
-          members: []
-        }
-      };
-  
-      // Gather team members info
-      const teamEditor = document.getElementById('team-members-editor');
-      // Assuming each member block has an index-based id:
-      teamEditor.querySelectorAll('.team-member-editor').forEach((memberEl, i) => {
-        const role = document.getElementById(`member-role-${i}`).value;
-        const name = document.getElementById(`member-name-${i}`).value;
-        updatedData.team.members.push({ role, name });
-      });
-      
-      // Update Firestore
-      const docRef = doc(db, 'pages', 'hakkimizda');
-      await updateDoc(docRef, updatedData);
-      alert('Hakkımızda içeriği güncellendi!');
-    } catch (error) {
-      console.error('Hakkımızda güncelleme hatası:', error);
-      alert('Güncelleme hatası: ' + error.message);
-    } finally {
-      hideLoader();
-    }
-  };
-  
-  window.addTeamMember = function() {
+    const newBlog = {
+      title: titleEl.value,
+      excerpt: excerptEl.value,
+      content: contentEl.value,
+      image: imagePath,
+      createdAt: serverTimestamp()
+    };
+    await addDoc(collection(db, 'blogs'), newBlog);
+    alert("Yeni blog eklendi!");
+    loadBlogs();
+  } catch (error) {
+    console.error("createBlog error:", error);
+    alert("Blog eklenirken hata: " + error.message);
+  } finally {
+    hideLoader();
+  }
+};
+
+window.deleteBlog = async function(docId) {
+  try {
+    showLoader();
+    await deleteDoc(doc(db, 'blogs', docId));
+    alert("Blog silindi!");
+    loadBlogs();
+  } catch (error) {
+    console.error("deleteBlog error:", error);
+    alert("Blog silinirken hata: " + error.message);
+  } finally {
+    hideLoader();
+  }
+};
+
+window.deleteMessage = async function(docId) {
+  try {
+    await deleteDoc(doc(db, 'contact_messages', docId));
+    alert('Mesaj silindi!');
+    loadMessages();
+  } catch (error) {
+    console.error('Mesaj silinirken hata:', error);
+    alert('Mesaj silinirken hata: ' + error.message);
+  }
+};
+
+// ------------------------------
+// HAKKIMIZDA UPDATE
+// ------------------------------
+window.updateHakkimizdaContent = async function() {
+  try {
+    showLoader();
+    const updatedData = {
+      hero: {
+        title: document.getElementById('hakkimizda-hero-title').value,
+        subtitle: document.getElementById('hakkimizda-hero-subtitle').value
+      },
+      story: {
+        heading: document.getElementById('hakkimizda-story-heading').value,
+        content: document.getElementById('hakkimizda-story-content').value
+      },
+      team: {
+        heading: document.getElementById('hakkimizda-team-heading').value,
+        members: []
+      }
+    };
     const teamEditor = document.getElementById('team-members-editor');
-    const index = teamEditor.children.length;
-    const memberHTML = `
-      <div class="team-member-editor">
-        <label>Üye ${index + 1}</label>
-        <input type="text" id="member-role-${index}" placeholder="Rol" value="">
-        <input type="text" id="member-name-${index}" placeholder="İsim" value="">
-        <button type="button" onclick="removeTeamMember(${index})">Sil</button>
-      </div>
-    `;
-    teamEditor.insertAdjacentHTML('beforeend', memberHTML);
-  };
-  
-  window.removeTeamMember = function(index) {
-    const teamEditor = document.getElementById('team-members-editor');
-    // Remove the corresponding member block
-    const memberBlock = teamEditor.querySelector(`#member-role-${index}`).closest('.team-member-editor');
-    if (memberBlock) memberBlock.remove();
-  };
-  
-/** 
- * Update the FAQ doc in Firestore with the new question/answer data 
- */
+    teamEditor.querySelectorAll('.team-member-editor').forEach((memberEl, i) => {
+      const role = document.getElementById(`member-role-${i}`).value;
+      const name = document.getElementById(`member-name-${i}`).value;
+      updatedData.team.members.push({ role, name });
+    });
+    const docRef = doc(db, 'pages', 'hakkimizda');
+    await updateDoc(docRef, updatedData);
+    alert('Hakkımızda içeriği güncellendi!');
+  } catch (error) {
+    console.error('Hakkımızda güncelleme hatası:', error);
+    alert('Güncelleme hatası: ' + error.message);
+  } finally {
+    hideLoader();
+  }
+};
+
+window.addTeamMember = function() {
+  const teamEditor = document.getElementById('team-members-editor');
+  const index = teamEditor.children.length;
+  const memberHTML = `
+    <div class="team-member-editor">
+      <label>Üye ${index + 1}</label>
+      <input type="text" id="member-role-${index}" placeholder="Rol" value="">
+      <input type="text" id="member-name-${index}" placeholder="İsim" value="">
+      <button type="button" onclick="removeTeamMember(${index})">Sil</button>
+    </div>
+  `;
+  teamEditor.insertAdjacentHTML('beforeend', memberHTML);
+};
+
+window.removeTeamMember = function(index) {
+  const teamEditor = document.getElementById('team-members-editor');
+  const memberBlock = teamEditor.querySelector(`#member-role-${index}`).closest('.team-member-editor');
+  if (memberBlock) memberBlock.remove();
+};
+
+// ------------------------------
+// FAQ SECTION
+// ------------------------------
 window.updateFAQ = async function() {
   try {
-    // Get existing data
     const faqData = await getContentSection('faq');
     if (!faqData || !faqData.items) {
       alert("FAQ verisi bulunamadı. Lütfen önce oluşturun.");
       return;
     }
-
-    // Collect updated items
     let newItems = [];
     for (let i = 0; i < faqData.items.length; i++) {
       const question = document.getElementById(`faq-question-${i}`).value;
       const answer   = document.getElementById(`faq-answer-${i}`).value;
       newItems.push({ question, answer });
     }
-
-    // Update doc
     await updateDoc(doc(db, 'site_content', 'faq'), { items: newItems });
     alert('FAQ güncellendi!');
   } catch (error) {
@@ -753,54 +616,37 @@ window.updateFAQ = async function() {
   }
 };
 
-/** 
- * Remove an FAQ item by index 
- */
 window.removeFAQItem = async function(index) {
   try {
     const faqData = await getContentSection('faq');
     if (!faqData || !faqData.items) return;
-
-    // Remove the item
     faqData.items.splice(index, 1);
-
-    // Save to Firestore
     await updateDoc(doc(db, 'site_content', 'faq'), { items: faqData.items });
     alert('SSS Silindi!');
-    loadFAQEditor(); // Reload the FAQ editor
+    loadFAQEditor();
   } catch (error) {
     console.error('removeFAQItem error:', error);
     alert('SSS silinirken hata: ' + error.message);
   }
 };
 
-/** 
- * Add a new empty FAQ item 
- */
 window.addNewFAQItem = async function() {
   try {
     const faqData = await getContentSection('faq');
     if (!faqData || !faqData.items) return;
-
-    // Add a blank item
     faqData.items.push({
       question: "Yeni soru",
       answer: "Yeni cevap"
     });
-
-    // Update Firestore
     await updateDoc(doc(db, 'site_content', 'faq'), { items: faqData.items });
     alert('Yeni SSS eklendi!');
-    loadFAQEditor(); // Reload to show the new item
+    loadFAQEditor();
   } catch (error) {
     console.error('addNewFAQItem error:', error);
     alert('Yeni SSS eklenirken hata: ' + error.message);
   }
 };
 
-/** 
- * If there's no FAQ doc, create a default 
- */
 window.createDefaultFAQ = async function() {
   try {
     const defaultData = {
@@ -828,77 +674,124 @@ window.createDefaultFAQ = async function() {
   }
 };
 
+function createFAQEditor(data) {
+  if (!data) return `
+    <div class="editor-section">
+      <p>Henüz bir FAQ verisi bulunamadı.</p>
+      <button onclick="createDefaultFAQ()" class="update-btn">Varsayılan FAQ Oluştur</button>
+    </div>
+  `;
+  let faqItemsHTML = '';
+  if (data.items) {
+    data.items.forEach((item, i) => {
+      faqItemsHTML += `
+        <div class="card-item-editor">
+          <h4>FAQ ${i + 1}</h4>
+          <div class="form-group">
+            <label for="faq-question-${i}">Soru:</label>
+            <input type="text" id="faq-question-${i}" value="${item.question}">
+          </div>
+          <div class="form-group">
+            <label for="faq-answer-${i}">Cevap:</label>
+            <textarea id="faq-answer-${i}">${item.answer}</textarea>
+          </div>
+          <button type="button" class="update-btn" onclick="removeFAQItem(${i})">Bu SSS'yi Sil</button>
+        </div>
+      `;
+    });
+  }
+  let socialHTML = '';
+  if (!data.socialLinks) data.socialLinks = [];
+  data.socialLinks.forEach((link, i) => {
+    socialHTML += `
+      <div class="card-item-editor">
+        <h4>Sosyal Link ${i + 1}</h4>
+        <div class="form-group">
+          <label for="social-label-${i}">Label:</label>
+          <input type="text" id="social-label-${i}" value="${link.label}">
+        </div>
+        <div class="form-group">
+          <label for="social-url-${i}">URL:</label>
+          <input type="text" id="social-url-${i}" value="${link.url}">
+        </div>
+        <button type="button" class="update-btn" onclick="removeSocialLink(${i})">Bu Linki Sil</button>
+      </div>
+    `;
+  });
+  return `
+    <div class="editor-section">
+      <h3>Sık Sorulan Sorular</h3>
+      ${faqItemsHTML}
+      <button onclick="updateFAQ()" class="update-btn">FAQ Güncelle</button>
+      <button onclick="addNewFAQItem()" class="update-btn">Yeni SSS Ekle</button>
+    </div>
+    <div class="editor-section">
+      <h3>Sosyal Linkler</h3>
+      ${socialHTML}
+      <button onclick="updateSocialLinks()" class="update-btn">Linkleri Güncelle</button>
+      <button onclick="addNewSocialLink()" class="update-btn">Yeni Link Ekle</button>
+    </div>
+  `;
+}
 
-/** Update social links in Firestore */
 window.updateSocialLinks = async function() {
-    try {
-      const faqData = await getContentSection('faq');
-      if (!faqData) return;
-  
-      // Rebuild the array from input fields
-      let newLinks = [];
-      if (faqData.socialLinks) {
-        for (let i = 0; i < faqData.socialLinks.length; i++) {
-          const label = document.getElementById(`social-label-${i}`).value;
-          const url   = document.getElementById(`social-url-${i}`).value;
-          newLinks.push({ label, url });
-        }
+  try {
+    const faqData = await getContentSection('faq');
+    if (!faqData) return;
+    let newLinks = [];
+    if (faqData.socialLinks) {
+      for (let i = 0; i < faqData.socialLinks.length; i++) {
+        const label = document.getElementById(`social-label-${i}`).value;
+        const url   = document.getElementById(`social-url-${i}`).value;
+        newLinks.push({ label, url });
       }
-  
-      // Update Firestore
-      await updateDoc(doc(db, 'site_content', 'faq'), { socialLinks: newLinks });
-      alert('Sosyal Linkler güncellendi!');
-      loadFAQEditor(); // Refresh the FAQ editor
-    } catch (error) {
-      console.error('updateSocialLinks error:', error);
-      alert('Sosyal linkler güncellenirken hata: ' + error.message);
     }
-  };
-  
-  /** Add a new social link */
-  window.addNewSocialLink = async function() {
-    try {
-      const faqData = await getContentSection('faq');
-      if (!faqData) return;
-      if (!faqData.socialLinks) faqData.socialLinks = [];
-  
-      // Add a default link
-      faqData.socialLinks.push({
-        label: "New Link",
-        url: "https://example.com"
-      });
-  
-      await updateDoc(doc(db, 'site_content', 'faq'), { socialLinks: faqData.socialLinks });
-      alert('Yeni Link Eklendi!');
-      loadFAQEditor();
-    } catch (error) {
-      console.error('addNewSocialLink error:', error);
-      alert('Yeni link eklenirken hata: ' + error.message);
-    }
-  };
-  
-  /** Remove a social link by index */
-  window.removeSocialLink = async function(index) {
-    try {
-      const faqData = await getContentSection('faq');
-      if (!faqData || !faqData.socialLinks) return;
-  
-      faqData.socialLinks.splice(index, 1);
-  
-      await updateDoc(doc(db, 'site_content', 'faq'), { socialLinks: faqData.socialLinks });
-      alert('Link Silindi!');
-      loadFAQEditor();
-    } catch (error) {
-      console.error('removeSocialLink error:', error);
-      alert('Link silinirken hata: ' + error.message);
-    }
-  };
+    await updateDoc(doc(db, 'site_content', 'faq'), { socialLinks: newLinks });
+    alert('Sosyal Linkler güncellendi!');
+    loadFAQEditor();
+  } catch (error) {
+    console.error('updateSocialLinks error:', error);
+    alert('Sosyal linkler güncellenirken hata: ' + error.message);
+  }
+};
 
+window.addNewSocialLink = async function() {
+  try {
+    const faqData = await getContentSection('faq');
+    if (!faqData) return;
+    if (!faqData.socialLinks) faqData.socialLinks = [];
+    faqData.socialLinks.push({
+      label: "New Link",
+      url: "https://example.com"
+    });
+    await updateDoc(doc(db, 'site_content', 'faq'), { socialLinks: faqData.socialLinks });
+    alert('Yeni Link Eklendi!');
+    loadFAQEditor();
+  } catch (error) {
+    console.error('addNewSocialLink error:', error);
+    alert('Yeni link eklenirken hata: ' + error.message);
+  }
+};
 
+window.removeSocialLink = async function(index) {
+  try {
+    const faqData = await getContentSection('faq');
+    if (!faqData || !faqData.socialLinks) return;
+    faqData.socialLinks.splice(index, 1);
+    await updateDoc(doc(db, 'site_content', 'faq'), { socialLinks: faqData.socialLinks });
+    alert('Link Silindi!');
+    loadFAQEditor();
+  } catch (error) {
+    console.error('removeSocialLink error:', error);
+    alert('Link silinirken hata: ' + error.message);
+  }
+};
 
-// ---------- INITIALIZE SITE CONTENT (including FAQ) ----------
+// ------------------------------
+// INITIALIZE SITE CONTENT
+// ------------------------------
 async function initializeSiteContent() {
-  // 1) Hero
+  // Initialize Hero
   let heroRef = doc(db, 'site_content', 'hero');
   let heroSnap = await getDoc(heroRef);
   if (!heroSnap.exists()) {
@@ -909,7 +802,7 @@ async function initializeSiteContent() {
     });
   }
 
-  // 2) Stats
+  // Initialize Stats
   let statsRef = doc(db, 'site_content', 'stats');
   let statsSnap = await getDoc(statsRef);
   if (!statsSnap.exists()) {
@@ -923,7 +816,6 @@ async function initializeSiteContent() {
       ]
     });
   } else {
-    // Ensure exactly 3 items
     let existingStatsData = statsSnap.data();
     if (!existingStatsData.items || existingStatsData.items.length !== 3) {
       let newStatsItems = [
@@ -935,7 +827,7 @@ async function initializeSiteContent() {
     }
   }
 
-  // 3) Cards
+  // Initialize Cards
   let cardsRef = doc(db, 'site_content', 'cards');
   let cardsSnap = await getDoc(cardsRef);
   if (!cardsSnap.exists()) {
@@ -947,7 +839,6 @@ async function initializeSiteContent() {
       ]
     });
   } else {
-    // Ensure exactly 3 items
     let existingCardsData = cardsSnap.data();
     if (!existingCardsData.items || existingCardsData.items.length !== 3) {
       let newItems = [
@@ -959,11 +850,10 @@ async function initializeSiteContent() {
     }
   }
 
-  // 4) FAQ
+  // Initialize FAQ
   let faqRef = doc(db, 'site_content', 'faq');
   let faqSnap = await getDoc(faqRef);
   if (!faqSnap.exists()) {
-    // Create with 3 default items
     await setDoc(faqRef, {
       items: [
         {
@@ -985,8 +875,7 @@ async function initializeSiteContent() {
         { label: "LinkedIn", url: "https://linkedin.com/..." }
       ]
     });
-  }  else {
-    // If doc exists, check if socialLinks is missing, then add it
+  } else {
     let existingFAQ = faqSnap.data();
     if (!existingFAQ.socialLinks) {
       existingFAQ.socialLinks = [
@@ -996,8 +885,7 @@ async function initializeSiteContent() {
     }
   }
 
-  // 5) Hakkımızda
-  // Storing hakkımızda content in a separate 'pages' collection.
+  // Initialize Hakkımızda
   let hakkimizdaRef = doc(db, 'pages', 'hakkimizda');
   let hakkimizdaSnap = await getDoc(hakkimizdaRef);
   if (!hakkimizdaSnap.exists()) {
@@ -1024,17 +912,10 @@ async function initializeSiteContent() {
 }
 
 
-/** Helper to get doc data from Firestore */
-async function getContentSection(sectionName) {
-  const docRef = doc(db, 'site_content', sectionName);
-  const docSnap = await getDoc(docRef);
-  if (docSnap.exists()) {
-    return docSnap.data();
-  }
-  return null;
-}
 
-// ---------- SITE CONTENT EDITOR BUILDERS (Hero, Stats, Cards) ----------
+// ------------------------------
+// SITE CONTENT EDITOR BUILDERS
+// ------------------------------
 function createHeroEditor(data) {
   if (!data) return '';
   return `
@@ -1119,12 +1000,14 @@ function createCardsEditor(data) {
   `;
 }
 
-// ---------- UPDATE FUNCTIONS (Hero, Stats, Cards) ----------
+// ------------------------------
+// UPDATE FUNCTIONS (Hero, Stats, Cards)
+// ------------------------------
 window.updateHero = async function() {
   const newData = {
-    title:       document.getElementById('hero-title').value,
+    title: document.getElementById('hero-title').value,
     description: document.getElementById('hero-desc').value,
-    buttonText:  document.getElementById('hero-button').value
+    buttonText: document.getElementById('hero-button').value
   };
   try {
     await updateDoc(doc(db, 'site_content', 'hero'), newData);
@@ -1142,7 +1025,7 @@ window.updateStats = async function() {
     let newItems = [];
     for (let i = 0; i < statsData.items.length; i++) {
       const number = document.getElementById(`stat-number-${i}`).value;
-      const title  = document.getElementById(`stat-title-${i}`).value;
+      const title = document.getElementById(`stat-title-${i}`).value;
       newItems.push({ number, title });
     }
     const newData = {
@@ -1165,7 +1048,7 @@ window.updateCards = async function() {
     let newItems = [];
     for (let i = 0; i < cardsData.items.length; i++) {
       const title = document.getElementById(`card-title-${i}`).value;
-      const desc  = document.getElementById(`card-desc-${i}`).value;
+      const desc = document.getElementById(`card-desc-${i}`).value;
       newItems.push({ title, description: desc });
     }
     await updateDoc(doc(db, 'site_content', 'cards'), { items: newItems });
@@ -1175,11 +1058,278 @@ window.updateCards = async function() {
     alert('Güncelleme hatası: ' + error.message);
   }
 };
+
 function showLoader() {
-    document.getElementById('loader').style.display = 'flex';
-  }
+  document.getElementById('loader').style.display = 'flex';
+}
   
-  function hideLoader() {
-    document.getElementById('loader').style.display = 'none';
+function hideLoader() {
+  document.getElementById('loader').style.display = 'none';
+}
+
+// ------------------------------
+// BLOG FUNCTIONS
+// ------------------------------
+window.createBlog = async function() {
+  try {
+    showLoader();
+    const titleEl = document.getElementById('blog-title');
+    const excerptEl = document.getElementById('blog-excerpt');
+    const contentEl = document.getElementById('blog-content');
+    const imageInput = document.getElementById('blog-image');
+    let imagePath = "";
+    if (imageInput && imageInput.files && imageInput.files[0]) {
+      const file = imageInput.files[0];
+      imagePath = await uploadBlogImage(file);
+    }
+    const newBlog = {
+      title: titleEl.value,
+      excerpt: excerptEl.value,
+      content: contentEl.value,
+      image: imagePath,
+      createdAt: serverTimestamp()
+    };
+    await addDoc(collection(db, 'blogs'), newBlog);
+    alert("Yeni blog eklendi!");
+    loadBlogs();
+  } catch (error) {
+    console.error("createBlog error:", error);
+    alert("Blog eklenirken hata: " + error.message);
+  } finally {
+    hideLoader();
   }
-  
+};
+
+window.deleteBlog = async function(docId) {
+  try {
+    showLoader();
+    await deleteDoc(doc(db, 'blogs', docId));
+    alert("Blog silindi!");
+    loadBlogs();
+  } catch (error) {
+    console.error("deleteBlog error:", error);
+    alert("Blog silinirken hata: " + error.message);
+  } finally {
+    hideLoader();
+  }
+};
+
+window.deleteMessage = async function(docId) {
+  try {
+    await deleteDoc(doc(db, 'contact_messages', docId));
+    alert('Mesaj silindi!');
+    loadMessages();
+  } catch (error) {
+    console.error('Mesaj silinirken hata:', error);
+    alert('Mesaj silinirken hata: ' + error.message);
+  }
+};
+
+// ------------------------------
+// HAKKIMIZDA UPDATE
+// ------------------------------
+window.updateHakkimizdaContent = async function() {
+  try {
+    showLoader();
+    const updatedData = {
+      hero: {
+        title: document.getElementById('hakkimizda-hero-title').value,
+        subtitle: document.getElementById('hakkimizda-hero-subtitle').value
+      },
+      story: {
+        heading: document.getElementById('hakkimizda-story-heading').value,
+        content: document.getElementById('hakkimizda-story-content').value
+      },
+      team: {
+        heading: document.getElementById('hakkimizda-team-heading').value,
+        members: []
+      }
+    };
+    const teamEditor = document.getElementById('team-members-editor');
+    teamEditor.querySelectorAll('.team-member-editor').forEach((memberEl, i) => {
+      const role = document.getElementById(`member-role-${i}`).value;
+      const name = document.getElementById(`member-name-${i}`).value;
+      updatedData.team.members.push({ role, name });
+    });
+    const docRef = doc(db, 'pages', 'hakkimizda');
+    await updateDoc(docRef, updatedData);
+    alert('Hakkımızda içeriği güncellendi!');
+  } catch (error) {
+    console.error('Hakkımızda güncelleme hatası:', error);
+    alert('Güncelleme hatası: ' + error.message);
+  } finally {
+    hideLoader();
+  }
+};
+
+window.addTeamMember = function() {
+  const teamEditor = document.getElementById('team-members-editor');
+  const index = teamEditor.children.length;
+  const memberHTML = `
+    <div class="team-member-editor">
+      <label>Üye ${index + 1}</label>
+      <input type="text" id="member-role-${index}" placeholder="Rol" value="">
+      <input type="text" id="member-name-${index}" placeholder="İsim" value="">
+      <button type="button" onclick="removeTeamMember(${index})">Sil</button>
+    </div>
+  `;
+  teamEditor.insertAdjacentHTML('beforeend', memberHTML);
+};
+
+window.removeTeamMember = function(index) {
+  const teamEditor = document.getElementById('team-members-editor');
+  const memberBlock = teamEditor.querySelector(`#member-role-${index}`).closest('.team-member-editor');
+  if (memberBlock) memberBlock.remove();
+};
+
+// ------------------------------
+// FAQ SECTION
+// ------------------------------
+window.updateFAQ = async function() {
+  try {
+    const faqData = await getContentSection('faq');
+    if (!faqData || !faqData.items) {
+      alert("FAQ verisi bulunamadı. Lütfen önce oluşturun.");
+      return;
+    }
+    let newItems = [];
+    for (let i = 0; i < faqData.items.length; i++) {
+      const question = document.getElementById(`faq-question-${i}`).value;
+      const answer = document.getElementById(`faq-answer-${i}`).value;
+      newItems.push({ question, answer });
+    }
+    await updateDoc(doc(db, 'site_content', 'faq'), { items: newItems });
+    alert('FAQ güncellendi!');
+  } catch (error) {
+    console.error('Güncelleme hatası (FAQ):', error);
+    alert('FAQ güncelleme hatası: ' + error.message);
+  }
+};
+
+window.removeFAQItem = async function(index) {
+  try {
+    const faqData = await getContentSection('faq');
+    if (!faqData || !faqData.items) return;
+    faqData.items.splice(index, 1);
+    await updateDoc(doc(db, 'site_content', 'faq'), { items: faqData.items });
+    alert('SSS Silindi!');
+    loadFAQEditor();
+  } catch (error) {
+    console.error('removeFAQItem error:', error);
+    alert('SSS silinirken hata: ' + error.message);
+  }
+};
+
+window.addNewFAQItem = async function() {
+  try {
+    const faqData = await getContentSection('faq');
+    if (!faqData || !faqData.items) return;
+    faqData.items.push({
+      question: "Yeni soru",
+      answer: "Yeni cevap"
+    });
+    await updateDoc(doc(db, 'site_content', 'faq'), { items: faqData.items });
+    alert('Yeni SSS eklendi!');
+    loadFAQEditor();
+  } catch (error) {
+    console.error('addNewFAQItem error:', error);
+    alert('Yeni SSS eklenirken hata: ' + error.message);
+  }
+};
+
+window.createDefaultFAQ = async function() {
+  try {
+    const defaultData = {
+      items: [
+        {
+          question: "Hizmetleriniz neler?",
+          answer: "Profesyonel oyun sunucuları, altyapı ve 7/24 destek hizmetleri sunuyoruz."
+        },
+        {
+          question: "Destek ekibiniz var mı?",
+          answer: "Evet, uzman destek ekibimiz tüm gün hizmet vermektedir."
+        },
+        {
+          question: "Fiyatlandırma nasıl?",
+          answer: "Farklı paket seçenekleri sunuyoruz. Detaylı bilgi için bizimle iletişime geçin."
+        }
+      ]
+    };
+    await setDoc(doc(db, 'site_content', 'faq'), defaultData);
+    alert('Varsayılan FAQ oluşturuldu!');
+    loadFAQEditor();
+  } catch (error) {
+    console.error('createDefaultFAQ error:', error);
+    alert('Varsayılan FAQ oluşturulurken hata: ' + error.message);
+  }
+};
+
+
+
+window.updateSocialLinks = async function() {
+  try {
+    const faqData = await getContentSection('faq');
+    if (!faqData) return;
+    let newLinks = [];
+    if (faqData.socialLinks) {
+      for (let i = 0; i < faqData.socialLinks.length; i++) {
+        const label = document.getElementById(`social-label-${i}`).value;
+        const url = document.getElementById(`social-url-${i}`).value;
+        newLinks.push({ label, url });
+      }
+    }
+    await updateDoc(doc(db, 'site_content', 'faq'), { socialLinks: newLinks });
+    alert('Sosyal Linkler güncellendi!');
+    loadFAQEditor();
+  } catch (error) {
+    console.error('updateSocialLinks error:', error);
+    alert('Sosyal linkler güncellenirken hata: ' + error.message);
+  }
+};
+
+window.addNewSocialLink = async function() {
+  try {
+    const faqData = await getContentSection('faq');
+    if (!faqData) return;
+    if (!faqData.socialLinks) faqData.socialLinks = [];
+    faqData.socialLinks.push({
+      label: "New Link",
+      url: "https://example.com"
+    });
+    await updateDoc(doc(db, 'site_content', 'faq'), { socialLinks: faqData.socialLinks });
+    alert('Yeni Link Eklendi!');
+    loadFAQEditor();
+  } catch (error) {
+    console.error('addNewSocialLink error:', error);
+    alert('Yeni link eklenirken hata: ' + error.message);
+  }
+};
+
+window.removeSocialLink = async function(index) {
+  try {
+    const faqData = await getContentSection('faq');
+    if (!faqData || !faqData.socialLinks) return;
+    faqData.socialLinks.splice(index, 1);
+    await updateDoc(doc(db, 'site_content', 'faq'), { socialLinks: faqData.socialLinks });
+    alert('Link Silindi!');
+    loadFAQEditor();
+  } catch (error) {
+    console.error('removeSocialLink error:', error);
+    alert('Link silinirken hata: ' + error.message);
+  }
+};
+
+// ------------------------------
+// INITIALIZE SITE CONTENT
+// ------------------------------
+
+
+/** Helper to get document data from Firestore */
+async function getContentSection(sectionName) {
+  const docRef = doc(db, 'site_content', sectionName);
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    return docSnap.data();
+  }
+  return null;
+}
