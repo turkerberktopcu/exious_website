@@ -335,3 +335,88 @@ input.invalid {
     width: 90%;
   }
 }
+
+/* Responsive Adjustments for Contact Page */
+
+/* For screens 768px and below */
+@media (max-width: 768px) {
+  .contact-hero-content {
+    padding: 2rem 1.5rem;
+    margin-top: 200px; /* reduce top margin to fit smaller screens */
+  }
+  .contact-hero-title {
+    font-size: 2.5rem;
+  }
+  .contact-hero-subtitle {
+    font-size: 1.1rem;
+  }
+  
+  .contact-section {
+    grid-template-columns: 1fr; /* stack info and form vertically */
+    padding: 3rem 1.5rem;
+  }
+  
+  .contact-info, 
+  .contact-container {
+    margin: 0 auto;
+    width: 90%;
+  }
+  
+  .contact-info h2,
+  .contact-container h2 {
+    font-size: 1.8rem;
+  }
+  
+  .contact-info p,
+  .contact-container p {
+    font-size: 1rem;
+  }
+  
+  .contact-card {
+    padding: 1.5rem;
+  }
+  
+  .contact-form {
+    gap: 1rem;
+  }
+}
+
+/* For extra small screens 480px and below */
+@media (max-width: 480px) {
+  .contact-hero-content {
+    padding: 1.5rem 1rem;
+    margin-top: 150px;
+  }
+  
+  .contact-hero-title {
+    font-size: 2rem;
+  }
+  .contact-hero-subtitle {
+    font-size: 1rem;
+  }
+  
+  .contact-info h2,
+  .contact-container h2 {
+    font-size: 1.6rem;
+  }
+  
+  .contact-info p,
+  .contact-container p {
+    font-size: 0.9rem;
+  }
+  
+  .contact-card {
+    padding: 1rem;
+  }
+  
+  .form-group input,
+  .form-group textarea {
+    font-size: 0.9rem;
+    padding: 0.6rem;
+  }
+  
+  .contact-submit {
+    padding: 0.8rem 1.5rem;
+    font-size: 0.9rem;
+  }
+}

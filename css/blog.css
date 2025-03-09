@@ -558,3 +558,73 @@ h1, h2, h3, h4, h5 {
     padding: 1.5rem;
   }
 }
+/* Responsive adjustments for EXIUS Blog Page */
+
+/* For medium screens */
+@media (max-width: 1280px) {
+  .blog-list-container {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+}
+
+/* For small screens */
+@media (max-width: 768px) {
+  /* Adjust blog hero container typography and padding */
+  .blog-hero-container {
+    width: 90%;
+    padding: 2.5rem 1.5rem;
+    margin-top: 250px;  /* reduced top margin for smaller screens */
+  }
+  .blog-hero-container h1 {
+    font-size: 2.5rem;
+  }
+  .blog-hero-container p {
+    font-size: 1.1rem;
+  }
+  
+  /* Adjust blog list grid */
+  .blog-list-container {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  /* Make blog cards adapt their height */
+  .blog-card {
+    height: auto;
+  }
+  
+  /* Blog modal adjustments */
+  .blog-modal-header {
+    height: 200px;
+  }
+  .blog-modal-title {
+    font-size: 1.8rem;
+  }
+}
+
+/* For extra small screens */
+@media (max-width: 480px) {
+  /* Further reduce hero text sizes */
+  .blog-hero-container h1 {
+    font-size: 2.2rem;
+  }
+  .blog-hero-container p {
+    font-size: 1rem;
+  }
+  
+  /* Stack blog list items in a single column */
+  .blog-list-container {
+    grid-template-columns: 1fr;
+  }
+  
+  /* Reduce padding in blog modal body */
+  .blog-modal-body {
+    padding: 1.5rem;
+  }
+  
+  /* Optional: Adjust modal title if needed */
+  .blog-modal-title {
+    font-size: 1.6rem;
+  }
+}
